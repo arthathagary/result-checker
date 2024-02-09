@@ -15,15 +15,33 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const { name, dob, town, district, courseName, courseDuration } =
-      await req.json();
+    const {
+      certificateNo,
+      name,
+      dob,
+      town,
+      district,
+      course,
+      competition,
+      courseDuration,
+      result,
+      leactureName,
+      issueDate,
+      nic,
+    } = await req.json();
     const person = new Result({
+      certificateNo: certificateNo,
       name: name,
       dob: dob,
       town: town,
       district: district,
-      courseName: courseName,
+      course: course,
+      competition: competition,
       courseDuration: courseDuration,
+      result: result,
+      leactureName: leactureName,
+      issueDate: issueDate,
+      nic: nic,
     });
     await person.save();
     return NextResponse.json(

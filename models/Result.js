@@ -2,12 +2,24 @@ import mongoose, { Document, Schema } from "mongoose";
 
 const ResultSchema = new Schema(
   {
+    certificateNo: {
+      type: String,
+      unique: true,
+    },
     name: String,
     dob: Date,
     town: String,
     district: String,
-    courseName: String,
+    course: String,
+    competition: String,
     courseDuration: Number,
+    result: String,
+    leactureName: [String],
+    issueDate: Date,
+    nic: {
+      type: String,
+      unique: true,
+    },
   },
   {
     timestamps: true,

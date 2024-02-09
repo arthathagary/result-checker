@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import Result from "@/models/Result";
 
 interface IParam {
-  resultId: string;
+  nicNo: string;
 }
 export async function GET(req: NextRequest, { params }: { params: IParam }) {
-  const { resultId } = params;
+  const { nicNo } = params;
   try {
     await connectDB();
-    const result = await Result.findOne({ certificateNo: resultId });
+    const result = await Result.findOne({ nic: nicNo });
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: `Error: ${error}` }, { status: 500 });
@@ -18,17 +18,13 @@ export async function GET(req: NextRequest, { params }: { params: IParam }) {
 
 // PUT endpoint
 export async function PUT(req: NextRequest, { params }: { params: IParam }) {
-  const { resultId } = params;
+  const { nicNo } = params;
   const body = await req.json();
   try {
     await connectDB();
-    const result = await Result.findOneAndUpdate(
-      { certificateNo: resultId },
-      body,
-      {
-        new: true,
-      }
-    );
+    const result = await Result.findOneAndUpdate({ nic: nicNo }, body, {
+      new: true,
+    });
 
     if (!result) {
       return NextResponse.json(
@@ -45,10 +41,10 @@ export async function PUT(req: NextRequest, { params }: { params: IParam }) {
 
 // DELETE endpoint
 export async function DELETE(req: NextRequest, { params }: { params: IParam }) {
-  const { resultId } = params;
+  const { nicNo } = params;
   try {
     await connectDB();
-    const result = await Result.findOneAndDelete({ certificateNo: resultId });
+    const result = await Result.findOneAndDelete({ nic: nicNo });
 
     if (!result) {
       return NextResponse.json(
