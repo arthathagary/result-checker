@@ -34,6 +34,7 @@ import {
 import Link from "next/link";
 import DetailCard from "./DetailCard";
 import Spinner from "@/components/Spinner";
+import CoverImg from "@/components/navbar/CoverImg";
 
 type Inputs = {
   search: string;
@@ -51,6 +52,8 @@ type ResulTableCellata = {
   certificateNo: string;
   result: string;
   leactureName: string[];
+  founderName: string;
+  registrationNo: string;
   issueDate: string;
   nic: string;
 };
@@ -67,7 +70,7 @@ export default function ClientPage() {
     useState<ResulTableCellata | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState("certificateNo");
   const [isFetched, setIsFetched] = useState(true);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -121,7 +124,7 @@ export default function ClientPage() {
       >
         <Card className="flex flex-col items-center md:mt-32">
           <CardHeader>
-            <CardTitle className="md:text-3xl text-2xl font-bold mb-4">
+            <CardTitle className="md:text-3xl text-2xl text-center font-bold md:mb-4">
               Certificate Verification
             </CardTitle>
           </CardHeader>
@@ -136,7 +139,7 @@ export default function ClientPage() {
                     onValueChange={handleSelectChange}
                   >
                     <SelectTrigger className="md:w-[180px] w-full mb-4">
-                      <SelectValue placeholder="Select Value" />
+                      <SelectValue placeholder="Certificate No" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="nic">NIC</SelectItem>
@@ -148,7 +151,7 @@ export default function ClientPage() {
                   <Input
                     type="text"
                     id="search"
-                    placeholder="Enter Certificate Number"
+                    placeholder="Enter Certificate Number or NIC"
                     {...register("search")}
                     className="w-full mb-4"
                     required
@@ -157,12 +160,13 @@ export default function ClientPage() {
               </div>
               <Button
                 type="submit"
-                className="w-full flex gap-4"
+                className="w-full flex gap-4 mb-4 md:mb-8"
                 disabled={loading}
               >
                 Search
                 {loading && <Spinner />}
               </Button>
+              <CoverImg />
             </form>
           </CardContent>
           {loading && <p>Loading...</p>}
@@ -177,10 +181,12 @@ export default function ClientPage() {
                   <TableCell>{resulTableCellata.certificateNo}</TableCell>
                 </TableRow>
                 <TableRow className="bg-black dark:bg-white">
-                  <TableHead className="text-white dark:text-black hover:bg-black dark:hover:bg-white">
+                  <TableHead
+                    colSpan={2}
+                    className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                  >
                     Personal Information
                   </TableHead>
-                  <TableCell className="text-white dark:text-black hover:bg-black dark:hover:bg-white"></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHead>Name</TableHead>
@@ -201,10 +207,12 @@ export default function ClientPage() {
                   <TableCell>{resulTableCellata.district}</TableCell>
                 </TableRow>
                 <TableRow className="bg-black dark:bg-white">
-                  <TableHead className="text-white dark:text-black hover:bg-black dark:hover:bg-white">
+                  <TableHead
+                    colSpan={2}
+                    className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                  >
                     Course Details
                   </TableHead>
-                  <TableCell className="text-white dark:text-black hover:bg-black dark:hover:bg-white"></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHead>Course</TableHead>
@@ -219,12 +227,24 @@ export default function ClientPage() {
                   <TableCell>{resulTableCellata.courseDuration}</TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableHead>Result</TableHead>
+                  <TableCell>{resulTableCellata.result}</TableCell>
+                </TableRow>
+                <TableRow>
                   <TableHead>Teacher/Lecture</TableHead>
                   <TableCell>
                     {resulTableCellata.leactureName.map((name, index) => (
                       <p key={index}>{name}</p>
                     ))}
                   </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead>Founder of Edukinniya</TableHead>
+                  <TableCell>{resulTableCellata.founderName}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHead>Edukinniya&apos;s Registration Number</TableHead>
+                  <TableCell>{resulTableCellata.registrationNo}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHead>Issue Date</TableHead>

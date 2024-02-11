@@ -26,9 +26,12 @@ export async function POST(req: NextRequest) {
       courseDuration,
       result,
       leactureName,
+      founderName,
+      registrationNo,
       issueDate,
       nic,
     } = await req.json();
+    console.log(issueDate);
     const person = new Result({
       certificateNo: certificateNo,
       name: name,
@@ -40,8 +43,10 @@ export async function POST(req: NextRequest) {
       courseDuration: courseDuration,
       result: result,
       leactureName: leactureName,
+      founderName: founderName,
+      registrationNo: registrationNo,
       issueDate: issueDate,
-      nic: nic,
+      nic: nic.toUpperCase(),
     });
     await person.save();
     return NextResponse.json(

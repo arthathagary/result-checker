@@ -22,8 +22,7 @@ const Navbar = () => {
             
           "
           >
-            {/* <Logo /> */}
-            <h1 className="text-white dark:text-black">EduKinniya</h1>
+            <Logo />
             <ModeToggle />
           </div>
         </Container>

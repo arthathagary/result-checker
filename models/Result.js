@@ -15,6 +15,8 @@ const ResultSchema = new Schema(
     courseDuration: Number,
     result: String,
     leactureName: [String],
+    founderName: String,
+    registrationNo: String,
     issueDate: Date,
     nic: {
       type: String,
