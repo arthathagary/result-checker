@@ -46,9 +46,10 @@ export async function PUT(req: NextRequest, { params }: { params: IParam }) {
 // DELETE endpoint
 export async function DELETE(req: NextRequest, { params }: { params: IParam }) {
   const { resultId } = params;
+  console.log(resultId);
   try {
     await connectDB();
-    const result = await Result.findOneAndDelete({ certificateNo: resultId });
+    const result = await Result.findOneAndDelete({ _id: resultId });
 
     if (!result) {
       return NextResponse.json(

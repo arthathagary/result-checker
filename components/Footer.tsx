@@ -1,34 +1,27 @@
 import React from "react";
 import Container from "./Container";
+import Logo from "./navbar/Logo";
+import { ModeToggle } from "./modetoggle";
+import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div>
-      <div className="w-full bg-[#111827] dark:bg-[#F9FAFB] z-10 shadow-sm relative bottom-0">
-        <div
-          className="
-        py-4
-        "
-        >
-          <Container>
-            <div
-              className="
-            flex 
-            flex-row 
-            items-center 
-            justify-between
-            gap-3
-            md:gap-0
-            
-          "
+    <div className="bg-[#030712] dark:bg-[#F9FAFB]">
+      <Container>
+        <div className="md:py-4 py-2 flex md:flex-row flex-col items-center justify-between gap-1 md:gap-0">
+          <h1 className="text-white dark:text-[#030712] text-sm md:text-base">
+            &copy; 2024 EduKinnniya
+          </h1>
+          <h1 className="text-white dark:text-[#030712] text-sm md:text-base">
+            <Link
+              href="https://www.linkedin.com/in/arthathagary/"
+              target="_blank"
             >
-              {/* <Logo /> */}
-              <h1 className="text-white dark:text-black">EduKinniya</h1>
-              {/* <ModeToggle /> */}
-            </div>
-          </Container>
+              Developed by Agary
+            </Link>
+          </h1>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

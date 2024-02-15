@@ -18,10 +18,7 @@ const ResultSchema = new Schema(
     founderName: String,
     registrationNo: String,
     issueDate: Date,
-    nic: {
-      type: String,
-      unique: true,
-    },
+    nic: String,
   },
   {
     timestamps: true,

@@ -9,8 +9,8 @@ export async function GET(req: NextRequest, { params }: { params: IParam }) {
   const { nicNo } = params;
   try {
     await connectDB();
-    const result = await Result.findOne({ nic: nicNo });
-    return NextResponse.json(result, { status: 200 });
+    const results = await Result.find({ nic: nicNo });
+    return NextResponse.json(results || [], { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: `Error: ${error}` }, { status: 500 });
   }

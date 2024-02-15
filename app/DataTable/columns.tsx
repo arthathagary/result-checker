@@ -11,6 +11,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, Trash } from "lucide-react";
+import { deleteData } from "../actions/deleteData";
+import { useRouter } from "next/navigation";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -34,12 +36,13 @@ export type Result = {
 
 export const columns: ColumnDef<Result>[] = [
   {
+    header: "Action",
     id: "actions",
     cell: ({ row }) => {
       const result = row.original;
 
       return (
-        <Button variant="ghost" onClick={() => console.log(result._id)}>
+        <Button variant="ghost" onClick={() => handleDelete(result._id)}>
           {" "}
           <Trash size={16} />
         </Button>
@@ -113,3 +116,19 @@ export const columns: ColumnDef<Result>[] = [
     header: "Date of birth",
   },
 ];
+
+export const DeleteComponent = () => {
+  const router = useRouter();
+};
+
+const handleDelete = async (resultId: string): Promise<void> => {
+  if (window.confirm("Are you sure you want to delete this result?")) {
+    try {
+      await deleteData(resultId);
+      window.location.reload();
+      // Handle any additional UI updates or state changes if needed
+    } catch (error) {
+      // Handle error or show error message to the user
+    }
+  }
+};

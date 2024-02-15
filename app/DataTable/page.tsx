@@ -19,12 +19,16 @@ async function getData(): Promise<Result[]> {
   }
 }
 
-export default async function DemoPage() {
-  const data = await getData();
+export default async function TablePage() {
+  const data: any = await getData();
+  console.log(data);
 
   return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+    <div className="md:container mx-auto">
+      <h1 className=" text-center font-bold text-xl md:pt-32 mt-6 md:mt-0 mb-4 md:mb-0">
+        All Records
+      </h1>
+      <DataTable columns={columns} data={data.results} />
     </div>
   );
 }

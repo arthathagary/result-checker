@@ -6,7 +6,11 @@ export async function GET(req: NextRequest) {
   try {
     await connectDB();
     const results = await Result.find();
-    return NextResponse.json(results, { status: 200 });
+    const numberOfResults = results.length;
+    return NextResponse.json(
+      { results, count: numberOfResults },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json({ message: `Error: ${error}` }, { status: 500 });
   }
@@ -31,7 +35,7 @@ export async function POST(req: NextRequest) {
       issueDate,
       nic,
     } = await req.json();
-    console.log(issueDate);
+
     const person = new Result({
       certificateNo: certificateNo,
       name: name,
@@ -42,7 +46,7 @@ export async function POST(req: NextRequest) {
       competition: competition,
       courseDuration: courseDuration,
       result: result,
-      leactureName: leactureName,
+      leactureName: leactureName.teacherNames,
       founderName: founderName,
       registrationNo: registrationNo,
       issueDate: issueDate,

@@ -27,7 +27,10 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "models/User.js",
-    "models/Result.js"
+    "models/Result.js",
+    "middleware.js",
+    "app/Providers.js",
+    "app/api/auth/[...nextauth]/route.js"
   ],
   "exclude": ["node_modules"]
 }
