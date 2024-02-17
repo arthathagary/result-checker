@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, { params }: { params: IParam }) {
   const { resultId } = params;
   try {
     await connectDB();
-    const result = await Result.findOne({ certificateNo: resultId });
+    const result = await Result.find({ certificateNo: resultId });
     return NextResponse.json(result, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: `Error: ${error}` }, { status: 500 });

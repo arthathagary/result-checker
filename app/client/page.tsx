@@ -38,6 +38,8 @@ import CoverImg from "@/components/navbar/CoverImg";
 import Footer from "@/components/Footer";
 import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import React from "react";
+import NicSearchCard from "./NicSearchCard";
 
 type Inputs = {
   search: string;
@@ -69,12 +71,17 @@ export default function ClientPage() {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const [resulTableCellata, setResulTableCellata] =
-    useState<ResulTableCellata | null>(null);
+  const [resulTableCellata, setResulTableCellata] = useState<
+    ResulTableCellata[] | null
+  >(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedValue, setSelectedValue] = useState("certificateNo");
   const [isFetched, setIsFetched] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
+  const [resultDataTable, setResultDataTable] =
+    useState<ResulTableCellata | null>(null);
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       setLoading(true);
@@ -97,7 +104,7 @@ export default function ClientPage() {
           setError("Check the NIC number and try again.");
           setIsFetched(true);
         } else {
-          setResulTableCellata(response.data[0]);
+          setResulTableCellata(response.data);
           setIsFetched(false);
         }
       }
@@ -120,19 +127,34 @@ export default function ClientPage() {
     console.log(event);
   };
 
-  const dateOfBirthObj = resulTableCellata?.dob
-    ? new Date(resulTableCellata.dob)
-    : new Date(); // Provide a default value, you can replace it with the desired default date
+  const dateConvert = (date: string) => {
+    const dateObj = new Date(date);
+    return dateObj.toISOString().split("T")[0];
+  };
 
-  // Get the date in the "YYYY-MM-DD" format
-  const formattedDateDob = dateOfBirthObj.toISOString().split("T")[0];
+  const handleClick = async (resultData: string) => {
+    setIsClicked(true);
+    try {
+      const response = await axios.get(`/api/results/${resultData}`);
+      console.log(response.data[0]);
+      setResultDataTable(response.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const issueDateObj = resulTableCellata?.issueDate
-    ? new Date(resulTableCellata.dob)
-    : new Date(); // Provide a default value, you can replace it with the desired default date
+  // const dateOfBirthObj = resulTableCellata?.dob
+  //   ? new Date(resulTableCellata.dob)
+  //   : new Date();
+  // // Get the date in the "YYYY-MM-DD" format
+  // const formattedDateDob = dateOfBirthObj.toISOString().split("T")[0];
 
-  // Get the date in the "YYYY-MM-DD" format
-  const formattedIssueDate = dateOfBirthObj.toISOString().split("T")[0];
+  // const issueDateObj = resulTableCellata?.issueDate
+  //   ? new Date(resulTableCellata.dob)
+  //   : new Date(); // Provide a default value, you can replace it with the desired default date
+
+  // // Get the date in the "YYYY-MM-DD" format
+  // const formattedIssueDate = dateOfBirthObj.toISOString().split("T")[0];
 
   const [dataCount, setDataCount] = useState<number>(0);
 
@@ -224,85 +246,201 @@ export default function ClientPage() {
             {loading && <p>Loading...</p>}
 
             {resulTableCellata && Object.keys(resulTableCellata).length > 0 && (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Certificate Number</TableHead>
-                    <TableCell>{resulTableCellata.certificateNo}</TableCell>
-                  </TableRow>
-                  <TableRow className="bg-black dark:bg-white">
-                    <TableHead
-                      colSpan={2}
-                      className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
-                    >
-                      Personal Information
-                    </TableHead>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableCell>{resulTableCellata.name}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Date of birth</TableHead>
-                    <TableCell>{formattedDateDob}</TableCell>
-                  </TableRow>
+              <div
+                className={`flex justify-center items-center gap-4  ${
+                  resulTableCellata.length === 1 ? "w-full" : ""
+                }`}
+              >
+                {resulTableCellata.map((certificate, index) => (
+                  <div key={index} className="w-full">
+                    {resulTableCellata.length === 1 ? (
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Certificate Number</TableHead>
+                            <TableCell>{certificate.certificateNo}</TableCell>
+                          </TableRow>
+                          <TableRow className="bg-black dark:bg-white">
+                            <TableHead
+                              colSpan={2}
+                              className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                            >
+                              Personal Information
+                            </TableHead>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableCell>{certificate.name}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Date of birth</TableHead>
+                            <TableCell>
+                              {dateConvert(certificate.dob)}
+                            </TableCell>
+                          </TableRow>
 
-                  <TableRow>
-                    <TableHead>Town/Village</TableHead>
-                    <TableCell>{resulTableCellata.town}</TableCell>
-                  </TableRow>
+                          <TableRow>
+                            <TableHead>Town/Village</TableHead>
+                            <TableCell>{certificate.town}</TableCell>
+                          </TableRow>
 
-                  <TableRow>
-                    <TableHead>District</TableHead>
-                    <TableCell>{resulTableCellata.district}</TableCell>
-                  </TableRow>
-                  <TableRow className="bg-black dark:bg-white">
-                    <TableHead
-                      colSpan={2}
-                      className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
-                    >
-                      Course Details
-                    </TableHead>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Course</TableHead>
-                    <TableCell>{resulTableCellata.course}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Competition</TableHead>
-                    <TableCell>{resulTableCellata.competition}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Course Duration</TableHead>
-                    <TableCell>{resulTableCellata.courseDuration}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Result</TableHead>
-                    <TableCell>{resulTableCellata.result}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Teacher/Lecture</TableHead>
-                    <TableCell>
-                      {resulTableCellata.leactureName.map((name, index) => (
-                        <p key={index}>{name}</p>
-                      ))}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Founder of Edukinniya</TableHead>
-                    <TableCell>{resulTableCellata.founderName}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Edukinniya&apos;s Registration Number</TableHead>
-                    <TableCell>{resulTableCellata.registrationNo}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableHead>Issue Date</TableHead>
-                    <TableCell>{formattedIssueDate}</TableCell>
-                  </TableRow>
-                </TableHeader>
-              </Table>
+                          <TableRow>
+                            <TableHead>District</TableHead>
+                            <TableCell>{certificate.district}</TableCell>
+                          </TableRow>
+                          <TableRow className="bg-black dark:bg-white">
+                            <TableHead
+                              colSpan={2}
+                              className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                            >
+                              Course Details
+                            </TableHead>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Course</TableHead>
+                            <TableCell>{certificate.course}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Competition</TableHead>
+                            <TableCell>{certificate.competition}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Course Duration</TableHead>
+                            <TableCell>{certificate.courseDuration}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Result</TableHead>
+                            <TableCell>{certificate.result}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Teacher/Lecture</TableHead>
+                            <TableCell>
+                              {certificate.leactureName.map((name, index) => (
+                                <p key={index}>{name}</p>
+                              ))}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Founder of Edukinniya</TableHead>
+                            <TableCell>{certificate.founderName}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>
+                              Edukinniya&apos;s Registration Number
+                            </TableHead>
+                            <TableCell>{certificate.registrationNo}</TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableHead>Issue Date</TableHead>
+                            <TableCell>
+                              {dateConvert(certificate.issueDate)}
+                            </TableCell>
+                          </TableRow>
+                        </TableHeader>
+                      </Table>
+                    ) : (
+                      <>
+                        {!isClicked && (
+                          <div className=" ">
+                            <NicSearchCard
+                              data={certificate}
+                              onClick={handleClick}
+                              clickedEvt={isClicked}
+                              setClickedEvt={setIsClicked}
+                            />
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
             )}
+
+            <>
+              {isClicked && (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Certificate Number</TableHead>
+                      <TableCell>{resultDataTable?.certificateNo}</TableCell>
+                    </TableRow>
+                    <TableRow className="bg-black dark:bg-white">
+                      <TableHead
+                        colSpan={2}
+                        className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                      >
+                        Personal Information
+                      </TableHead>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableCell>{resultDataTable?.name}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Date of birth</TableHead>
+                      {/* <TableCell>{dateConvert(resultDataTable?.dob)}</TableCell> */}
+                    </TableRow>
+
+                    <TableRow>
+                      <TableHead>Town/Village</TableHead>
+                      <TableCell>{resultDataTable?.town}</TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableHead>District</TableHead>
+                      <TableCell>{resultDataTable?.district}</TableCell>
+                    </TableRow>
+                    <TableRow className="bg-black dark:bg-white">
+                      <TableHead
+                        colSpan={2}
+                        className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                      >
+                        Course Details
+                      </TableHead>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Course</TableHead>
+                      <TableCell>{resultDataTable?.course}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Competition</TableHead>
+                      <TableCell>{resultDataTable?.competition}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Course Duration</TableHead>
+                      <TableCell>{resultDataTable?.courseDuration}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Result</TableHead>
+                      <TableCell>{resultDataTable?.result}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Teacher/Lecture</TableHead>
+                      <TableCell>
+                        {resultDataTable?.leactureName.map((name, index) => (
+                          <p key={index}>{name}</p>
+                        ))}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Founder of Edukinniya</TableHead>
+                      <TableCell>{resultDataTable?.founderName}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>
+                        Edukinniya&apos;s Registration Number
+                      </TableHead>
+                      <TableCell>{resultDataTable?.registrationNo}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableHead>Issue Date</TableHead>
+                      {/* <TableCell>{dateConvert(resultDataTable?.issueDate)}</TableCell> */}
+                    </TableRow>
+                  </TableHeader>
+                </Table>
+              )}
+            </>
 
             {!loading &&
               !error &&
