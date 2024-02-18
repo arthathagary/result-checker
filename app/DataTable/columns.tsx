@@ -1,21 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@radix-ui/react-dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Trash } from "lucide-react";
 import { deleteData } from "../actions/deleteData";
-import { useRouter } from "next/navigation";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Result = {
   _id: string;
   name: string;
@@ -32,6 +21,15 @@ export type Result = {
   registrationNo: string;
   issueDate: string;
   dob: string;
+};
+
+const handleDelete = async (resultId: string): Promise<void> => {
+  if (window.confirm("Are you sure you want to delete this result?")) {
+    try {
+      await deleteData(resultId);
+      window.location.reload();
+    } catch (error) {}
+  }
 };
 
 export const columns: ColumnDef<Result>[] = [
@@ -116,19 +114,3 @@ export const columns: ColumnDef<Result>[] = [
     header: "Date of birth",
   },
 ];
-
-export const DeleteComponent = () => {
-  const router = useRouter();
-};
-
-const handleDelete = async (resultId: string): Promise<void> => {
-  if (window.confirm("Are you sure you want to delete this result?")) {
-    try {
-      await deleteData(resultId);
-      window.location.reload();
-      // Handle any additional UI updates or state changes if needed
-    } catch (error) {
-      // Handle error or show error message to the user
-    }
-  }
-};

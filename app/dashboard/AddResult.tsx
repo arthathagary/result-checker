@@ -1,25 +1,23 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Calendar } from "./Calender";
+import Spinner from "@/components/Spinner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useSession } from "next-auth/react";
-import { DataTable } from "../DataTable/data-table";
-import TablePage from "../DataTable/page";
-import { useRouter } from "next/navigation";
-import Spinner from "@/components/Spinner";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import axios from "axios";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Calendar } from "./Calender";
 
 type Inputs = {
   name: string;

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Result, columns } from "./columns";
-import { DataTable } from "./data-table";
+import { Result, columns } from "@/app/DataTable/columns";
+import { DataTable } from "@/app/DataTable/data-table";
 
 async function getData(): Promise<Result[]> {
   try {
@@ -8,11 +8,9 @@ async function getData(): Promise<Result[]> {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      // Axios error
       console.error("Axios error:", error.message);
       console.error("Error details:", error.response?.data || error.request);
     } else {
-      // Non-Axios error
       console.error("Non-Axios error:", "Error");
     }
     return [];
