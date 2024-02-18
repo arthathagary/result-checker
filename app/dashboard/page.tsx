@@ -1,8 +1,10 @@
 import Container from "@/components/Container";
-import TablePage from "../DataTable/page";
-import AddResult from "./AddResult";
+import DataTablePage from "@/app/DataTable/page";
+import AddResult from "@/app/dashboard/AddResult";
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
-const DashboardPage = () => {
+const Dashboard = () => {
   // const { data: session } = useSession();
   // if (!session) {
   //   return <div>loading...</div>;
@@ -14,11 +16,11 @@ const DashboardPage = () => {
           <AddResult />
         </div>
         <div className="md:col-span-3">
-          <TablePage />
+          <DataTablePage />
         </div>
       </div>
     </Container>
   );
 };
 
-export default DashboardPage;
+export default Dashboard;
