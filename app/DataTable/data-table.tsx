@@ -2,18 +2,37 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  Updater,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  SortingState,
-  ColumnFiltersState,
-  Updater,
-  VisibilityState,
 } from "@tanstack/react-table";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -22,25 +41,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-interface DataTableProps<TData, TValue> {
+import { deleteData } from "../actions/deleteData";
+interface DataTableProps<TData extends { _id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends { _id: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
+  const handleDelete = async (resultId: string): Promise<void> => {
+    try {
+      await deleteData(resultId);
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -144,6 +166,32 @@ export function DataTable<TData, TValue>({
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
+                      )}
+                      {cell.column.id === "actions" && (
+                        <AlertDialog>
+                          <AlertDialogTrigger>
+                            <Trash size={16} />
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you want to delete this result?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Result deletion is permanent and cannot be
+                                undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(row.original._id)}
+                              >
+                                Continue
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       )}
                     </TableCell>
                   ))}

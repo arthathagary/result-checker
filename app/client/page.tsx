@@ -99,7 +99,6 @@ export default function ClientPage() {
         } else {
           setResulTableCellata(response.data);
           setIsFetched(false);
-          console.log(response.data);
         }
       } else {
         const response = await axios.get(
@@ -134,10 +133,12 @@ export default function ClientPage() {
 
   const handleSelectChange = (event: any) => {
     setSelectedValue(event);
-    console.log(event);
   };
 
   const dateConvert = (date: any) => {
+    if (!date) {
+      return "";
+    }
     const dateObj = new Date(date);
     return dateObj.toISOString().split("T")[0];
   };
@@ -146,7 +147,6 @@ export default function ClientPage() {
     setIsClicked(true);
     try {
       const response = await axios.get(`/api/results/${resultData}`);
-      console.log(response.data[0]);
       setResultDataTable(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -189,18 +189,18 @@ export default function ClientPage() {
         >
           <Card className="flex flex-col items-center md:mt-32">
             <CardHeader>
-              <CardTitle className="md:text-3xl text-2xl text-center font-bold md:mb-4">
+              <CardTitle className="md:text-3xl text-xl text-center font-bold md:mb-4">
                 Certificate Verification
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-center">
+              <p className="text-center text-xs md:text-base">
                 EduKinniya has issued{" "}
                 <span className="font-bold">{dataCount}</span> certificates.
               </p>
             </CardContent>
             <CardContent>
-              <p className="text-center">
+              <p className="text-center text-xs md:text-base">
                 Search for the details of the certificate by entering the
                 certificate number or NIC.
               </p>
@@ -253,7 +253,7 @@ export default function ClientPage() {
                 <CoverImg />
               </form>
             </CardContent>
-            {loading && <p>Loading...</p>}
+            {/* {loading && <p>Loading...</p>} */}
 
             {resulTableCellata && Object.keys(resulTableCellata).length > 0 && (
               <div
@@ -303,19 +303,25 @@ export default function ClientPage() {
                               colSpan={2}
                               className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
                             >
-                              Course Details
+                              Course / Competition Details
                             </TableHead>
                           </TableRow>
                           <TableRow>
                             <TableHead>Course</TableHead>
-                            <TableCell>{certificate.course}</TableCell>
+                            <TableCell>
+                              {certificate.course ? certificate.course : "-"}
+                            </TableCell>
                           </TableRow>
                           <TableRow>
                             <TableHead>Competition</TableHead>
-                            <TableCell>{certificate.competition}</TableCell>
+                            <TableCell>
+                              {certificate.competition
+                                ? certificate.competition
+                                : "-"}
+                            </TableCell>
                           </TableRow>
                           <TableRow>
-                            <TableHead>Course Duration</TableHead>
+                            <TableHead>Duration</TableHead>
                             <TableCell>{certificate.courseDuration}</TableCell>
                           </TableRow>
                           <TableRow>
@@ -351,7 +357,7 @@ export default function ClientPage() {
                     ) : (
                       <>
                         {!isClicked && (
-                          <div className=" ">
+                          <div className="mb-6">
                             <NicSearchCard
                               data={certificate}
                               onClick={handleClick}
@@ -406,19 +412,27 @@ export default function ClientPage() {
                         colSpan={2}
                         className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
                       >
-                        Course Details
+                        Course / Competition Details
                       </TableHead>
                     </TableRow>
                     <TableRow>
                       <TableHead>Course</TableHead>
-                      <TableCell>{resultDataTable?.course}</TableCell>
+                      <TableCell>
+                        {" "}
+                        {resultDataTable?.course ? resultDataTable.course : "-"}
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableHead>Competition</TableHead>
-                      <TableCell>{resultDataTable?.competition}</TableCell>
+                      <TableCell>
+                        {" "}
+                        {resultDataTable?.competition
+                          ? resultDataTable.competition
+                          : "-"}
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableHead>Course Duration</TableHead>
+                      <TableHead>Duration</TableHead>
                       <TableCell>{resultDataTable?.courseDuration}</TableCell>
                     </TableRow>
                     <TableRow>

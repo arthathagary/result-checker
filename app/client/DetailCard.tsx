@@ -2,26 +2,25 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import qrImg from "@/public/Ek_QR.png";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FaFacebook,
-  FaYoutube,
+  FaSquareThreads,
   FaTelegram,
   FaViber,
-  FaSquareThreads,
   FaXTwitter,
+  FaYoutube,
 } from "react-icons/fa6";
-import { FaWhatsappSquare } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { RiInstagramFill } from "react-icons/ri";
 
@@ -38,7 +37,7 @@ const DetailCard = () => {
   return (
     <Card className="flex flex-col items-center md:mt-32 mt-6 mb-6 md:mb-0 bg-[#030712] dark:bg-white dark:text-[#030712] text-white">
       <CardHeader>
-        <CardTitle className="md:text-3xl text-2xl font-bold md:mb-4 mb-0 text-center">
+        <CardTitle className="md:text-3xl text-xl font-bold md:mb-4 mb-0 text-center">
           Free Education Learning Platform
         </CardTitle>
       </CardHeader>

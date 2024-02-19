@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Trash } from "lucide-react";
-import { deleteData } from "../actions/deleteData";
+import { ArrowUpDown } from "lucide-react";
 
 export type Result = {
   _id: string;
@@ -23,29 +22,10 @@ export type Result = {
   dob: string;
 };
 
-const handleDelete = async (resultId: string): Promise<void> => {
-  if (window.confirm("Are you sure you want to delete this result?")) {
-    try {
-      await deleteData(resultId);
-      window.location.reload();
-    } catch (error) {}
-  }
-};
-
 export const columns: ColumnDef<Result>[] = [
   {
     header: "Action",
     id: "actions",
-    cell: ({ row }) => {
-      const result = row.original;
-
-      return (
-        <Button variant="ghost" onClick={() => handleDelete(result._id)}>
-          {" "}
-          <Trash size={16} />
-        </Button>
-      );
-    },
   },
   {
     accessorKey: "name",
