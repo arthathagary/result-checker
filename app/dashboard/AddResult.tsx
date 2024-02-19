@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Calendar } from "./Calender";
 
@@ -35,12 +35,17 @@ type Inputs = {
   issueDate: string;
   dob: string;
 };
-const AddResult = () => {
+
+interface AddResultProps {
+  id: string;
+}
+const AddResult = ({ id }: AddResultProps) => {
   const router = useRouter();
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -52,31 +57,84 @@ const AddResult = () => {
   const [selectedValue, setSelectedValue] = useState("certificateNo");
   const [isFetched, setIsFetched] = useState(true);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const formattedDobDate = dobdate ? format(dobdate, "yyyy-MM-dd") : null;
-    const formattedIssueDate = issueDate
-      ? format(issueDate, "yyyy-MM-dd")
-      : null;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`/api/results/${id}`);
+        const { data } = response;
+        const firstRecord = data[0];
+        setValue("certificateNo", firstRecord.certificateNo);
+        setValue("name", firstRecord.name);
+        setValue("nic", firstRecord.nic);
+        setValue("town", firstRecord.town);
+        setValue("district", firstRecord.district);
+        setValue("course", firstRecord.course);
+        setValue("competition", firstRecord.competition);
+        setValue("courseDuration", firstRecord.courseDuration);
+        setValue("result", firstRecord.result);
+        setValue("leactureName", firstRecord.leactureName);
+        setValue("founderName", firstRecord.founderName);
+        setValue("registrationNo", firstRecord.registrationNo);
+        // setValue("issueDate", firstRecord.issueDate);
+        // setValue("dob", firstRecord.dob);
 
-    const lectureData = {
-      teacherNames: data.leactureName.split(",").map((name) => name.trim()),
+        // Do something with the fetched data if needed
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("Failed to fetch data. Please try again.");
+      } finally {
+        setLoading(false);
+        setIsFetched(true);
+      }
     };
 
+    if (id) {
+      fetchData(); // Fetch data when id is available
+    }
+  }, [id, setValue]);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/results", {
-        ...data,
-        dob: formattedDobDate,
-        issueDate: formattedIssueDate,
-        leactureName: lectureData,
-      });
+      if (!id) {
+        const formattedDobDate = dobdate ? format(dobdate, "yyyy-MM-dd") : null;
+        const formattedIssueDate = issueDate
+          ? format(issueDate, "yyyy-MM-dd")
+          : null;
 
-      toast({
-        title: "Success",
-        description: "Record added successfully.",
-      });
+        const lectureData = {
+          teacherNames: data.leactureName.split(",").map((name) => name.trim()),
+        };
+        const response = await axios.post("/api/results", {
+          ...data,
+          dob: formattedDobDate,
+          issueDate: formattedIssueDate,
+          leactureName: lectureData,
+        });
 
-      router.refresh();
+        toast({
+          title: "Success",
+          description: "Record added successfully.",
+        });
+
+        router.refresh();
+      } else {
+        // const response = await axios.put(`/api/results/${id}`, {
+        //   ...data,
+        //   dob: formattedDobDate,
+        //   issueDate: formattedIssueDate,
+        //   leactureName: lectureData,
+        // });
+        console.log("data", data);
+
+        // toast({
+        //   title: "Success",
+        //   description: "Record updated successfully.",
+        // });
+
+        // router.push("/dashboard");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
@@ -99,9 +157,9 @@ const AddResult = () => {
       <div className="">
         <div>
           <h1 className="md:pt-32 text-center font-bold mb-4 text-xl">
-            Add Records
+            {id ? "Edit Records" : "Add Records"}
           </h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className="overflow-y-auto">
             <Input
               type="text"
               placeholder="Enter Certificate No"
@@ -122,7 +180,7 @@ const AddResult = () => {
               {...register("nic")}
               className="mb-4"
             />
-            <Popover>
+            {/* <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
@@ -149,7 +207,7 @@ const AddResult = () => {
                   toYear={2030}
                 />
               </PopoverContent>
-            </Popover>
+            </Popover> */}
 
             <Input
               type="text"
@@ -205,7 +263,7 @@ const AddResult = () => {
               {...register("registrationNo")}
               className="mb-4"
             />
-            <Popover>
+            {/* <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
@@ -232,7 +290,7 @@ const AddResult = () => {
                   toYear={2030}
                 />
               </PopoverContent>
-            </Popover>
+            </Popover> */}
             <Button
               disabled={loading}
               type="submit"

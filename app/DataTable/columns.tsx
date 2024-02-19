@@ -24,8 +24,12 @@ export type Result = {
 
 export const columns: ColumnDef<Result>[] = [
   {
-    header: "Action",
-    id: "actions",
+    header: "Delete",
+    id: "delete",
+  },
+  {
+    header: "Edit",
+    id: "edit",
   },
   {
     accessorKey: "name",

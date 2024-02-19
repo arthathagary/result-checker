@@ -14,6 +14,17 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,20 +52,53 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash } from "lucide-react";
+import { Trash, Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { deleteData } from "../actions/deleteData";
-interface DataTableProps<TData extends { _id: string }, TValue> {
+import { editData } from "../actions/editData";
+import AddResult from "../dashboard/AddResult";
+import { Controller, useForm } from "react-hook-form";
+import axios from "axios";
+import { getData } from "../actions/getData";
+interface DataTableProps<
+  TData extends { _id: string; certificateNo: string },
+  TValue
+> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+type Inputs = {
+  _id: string;
+  name: string;
+  certificateNo: string;
+  nic: string;
+  town: string;
+  district: string;
+  course: string;
+  competition: string;
+  courseDuration: string;
+  result: string;
+  leactureName: string;
+  founderName: string;
+  registrationNo: string;
+  issueDate: string;
+  dob: string;
+};
 
-export function DataTable<TData extends { _id: string }, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<
+  TData extends { _id: string; certificateNo: string },
+  TValue
+>({ columns, data }: DataTableProps<TData, TValue>) {
   const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    control,
+    formState: { errors },
+  } = useForm<Inputs>();
   const handleDelete = async (resultId: string): Promise<void> => {
     try {
       await deleteData(resultId);
@@ -63,6 +107,7 @@ export function DataTable<TData extends { _id: string }, TValue>({
       console.log(error);
     }
   };
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -167,7 +212,7 @@ export function DataTable<TData extends { _id: string }, TValue>({
                         cell.column.columnDef.cell,
                         cell.getContext()
                       )}
-                      {cell.column.id === "actions" && (
+                      {cell.column.id === "delete" && (
                         <AlertDialog>
                           <AlertDialogTrigger>
                             <Trash size={16} />
@@ -192,6 +237,26 @@ export function DataTable<TData extends { _id: string }, TValue>({
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
+                      )}
+
+                      {cell.column.id === "edit" && (
+                        <Dialog>
+                          <DialogTrigger>
+                            <Edit size={16} />
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Are you absolutely sure?
+                              </DialogTitle>
+                              <DialogDescription>
+                                <ScrollArea className="h-[600px]">
+                                  <AddResult id={row.original.certificateNo} />
+                                </ScrollArea>
+                              </DialogDescription>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
                       )}
                     </TableCell>
                   ))}
