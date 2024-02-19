@@ -89,7 +89,12 @@ export default function ClientPage() {
       if (selectedValue === "certificateNo") {
         const response = await axios.get(`/api/results/${data.search}`);
         if (response.data.length === 0) {
-          setError("No details found.");
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Check your certificate number and try again.",
+          });
+          // setError("No details found.");
           setIsFetched(true);
         } else {
           setResulTableCellata(response.data);
@@ -101,7 +106,12 @@ export default function ClientPage() {
           `/api/nic/${data.search.toLocaleUpperCase()}`
         );
         if (response.data.length === 0) {
-          setError("Check the NIC number and try again.");
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Check your NIC number and try again.",
+          });
+          // setError("Check the NIC number and try again.");
           setIsFetched(true);
         } else {
           setResulTableCellata(response.data);
@@ -127,7 +137,7 @@ export default function ClientPage() {
     console.log(event);
   };
 
-  const dateConvert = (date: string) => {
+  const dateConvert = (date: any) => {
     const dateObj = new Date(date);
     return dateObj.toISOString().split("T")[0];
   };
@@ -175,7 +185,7 @@ export default function ClientPage() {
         <div
           className={`md:grid ${
             isFetched ? "md:grid-cols-2" : ""
-          } md:gap-8 md:h-[90vh] md:mb-10`}
+          } md:gap-8  md:mb-10`}
         >
           <Card className="flex flex-col items-center md:mt-32">
             <CardHeader>
@@ -199,7 +209,7 @@ export default function ClientPage() {
               <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                 <div className="grid w-full items-center gap-1.5">
                   {/* <Label htmlFor="email">Search</Label> */}
-                  <div className="md:flex gap-4 ">
+                  <div className="md:flex gap-4 mb-2">
                     <div>
                       <Select
                         required
@@ -229,7 +239,7 @@ export default function ClientPage() {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full flex gap-4 mb-2 "
+                  className="w-full flex gap-4 mb-6 "
                   disabled={loading}
                 >
                   Search
@@ -379,7 +389,7 @@ export default function ClientPage() {
                     </TableRow>
                     <TableRow>
                       <TableHead>Date of birth</TableHead>
-                      {/* <TableCell>{dateConvert(resultDataTable?.dob)}</TableCell> */}
+                      <TableCell>{dateConvert(resultDataTable?.dob)}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -435,7 +445,9 @@ export default function ClientPage() {
                     </TableRow>
                     <TableRow>
                       <TableHead>Issue Date</TableHead>
-                      {/* <TableCell>{dateConvert(resultDataTable?.issueDate)}</TableCell> */}
+                      <TableCell>
+                        {dateConvert(resultDataTable?.issueDate)}
+                      </TableCell>
                     </TableRow>
                   </TableHeader>
                 </Table>
@@ -449,10 +461,12 @@ export default function ClientPage() {
                 <p>No details found.</p>
               )}
           </Card>
-          {isFetched && <DetailCard />}
+          <div> {isFetched && <DetailCard />}</div>
         </div>
       </Container>
-      {isFetched && <Footer />}
+      <div>
+        <Footer />
+      </div>
       <Toaster />
     </>
   );

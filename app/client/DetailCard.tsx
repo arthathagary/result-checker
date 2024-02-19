@@ -13,7 +13,17 @@ import qrImg from "@/public/Ek_QR.png";
 import Image from "next/image";
 
 import React, { useState } from "react";
-import { FaSquareFacebook } from "react-icons/fa6";
+import {
+  FaFacebook,
+  FaYoutube,
+  FaTelegram,
+  FaViber,
+  FaSquareThreads,
+  FaXTwitter,
+} from "react-icons/fa6";
+import { FaWhatsappSquare } from "react-icons/fa";
+import { IoLogoWhatsapp } from "react-icons/io";
+import { RiInstagramFill } from "react-icons/ri";
 
 const DetailCard = () => {
   const router = useRouter();
@@ -26,15 +36,15 @@ const DetailCard = () => {
 
   const truncatedContent = showMore ? content : content.slice(0, contentLimit);
   return (
-    <Card className="flex flex-col items-center md:mt-32 mt-6 mb-6 md:mb-0">
+    <Card className="flex flex-col items-center md:mt-32 mt-6 mb-6 md:mb-0 bg-[#030712] dark:bg-white dark:text-[#030712] text-white">
       <CardHeader>
         <CardTitle className="md:text-3xl text-2xl font-bold md:mb-4 mb-0 text-center">
           Free Education Learning Platform
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-center md:text-[16px] text-xs">
-          <p className={`overflow-hidden ${showMore ? "h-auto" : "h-[2.5em]"}`}>
+        <div className="text-center md:text-base text-xs">
+          <p className={`overflow-hidden ${showMore ? "h-auto" : "h-[2.8em]"}`}>
             {truncatedContent}
           </p>
           {content.length > contentLimit && (
@@ -49,40 +59,65 @@ const DetailCard = () => {
       </CardContent>
       <CardFooter>
         <div className="text-center">
-          {/* <Link href="www.Edukinniya.lk" className="md:text-xl">
-            🌐 www.Edukinniya.lk
-          </Link> */}
           <Button
-            className="rounded-full"
+            className="rounded-full bg-white text-[#030712] dark:bg-[#030712] dark:text-white hover:bg-[#222b44] hover:text-white transition-all duration-300 dark:hover:bg-[#353b4b] dark:hover:text-white mb-2"
             onClick={() => {
               router.replace("https://www.edukinniya.lk/");
             }}
           >
             🌐 www.Edukinniya.lk
           </Button>
-          <p className="my-4 text-xs md:text-xl">
-            Grade-1,2,3,4,5,6,7,8,9,10,11,O/L,A/L Online Exams
+          <p className="my-6 text-xs md:text-base">
+            Grade-1,2,3,4,5,6,7,8,9,10,O/L,A/L Online Exams
           </p>
-          {/* <Link href="www.onlineexamsfree.com" className="text-xl">
-            
-          </Link> */}
+
           <Button
-            className="rounded-full"
+            className="rounded-full bg-white text-[#030712] dark:bg-[#030712] dark:text-white hover:bg-[#222b44] hover:text-white transition-all duration-300 dark:hover:bg-[#353b4b] dark:hover:text-white mb-2"
             onClick={() => {
               router.replace("https://www.onlineexamsfree.com/");
             }}
           >
             🌐 www.onlineexamsfree.com
           </Button>
-
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center mb-2">
             <Image src={qrImg} alt="" height={150} width={150} />
           </div>
-          <div className="flex w-full items-center justify-center mt-4 gap-4">
-            <FaSquareFacebook size={30} />
-            <FaSquareFacebook size={30} />
-            <FaSquareFacebook size={30} />
-            <FaSquareFacebook size={30} />
+          <div>
+            <Link href="/contactus">
+              <Button className="rounded-full bg-white text-[#030712] dark:bg-[#030712] dark:text-white hover:bg-[#222b44] hover:text-white transition-all duration-300 dark:hover:bg-[#353b4b] dark:hover:text-white mb-2">
+                Contact Us
+              </Button>
+            </Link>
+          </div>
+          <div className="flex flex-col md:flex-row w-full items-center justify-center mt-4 gap-4">
+            <div className="flex gap-4">
+              <Link href="https://www.facebook.com/Edukinniya">
+                <FaFacebook size={30} />
+              </Link>
+              <Link href="https://youtube.com/c/Edukinniya">
+                <FaYoutube size={30} />
+              </Link>
+              <Link href="https://www.edukinniya.lk/2023/08/telegram-groups.html">
+                <FaTelegram size={30} />
+              </Link>
+              <Link href="https://www.edukinniya.lk/2023/08/whatsapp-groups.html">
+                <IoLogoWhatsapp size={30} />
+              </Link>
+            </div>
+            <div className="flex gap-4">
+              <Link href="https://invite.viber.com/?g2=AQAz%2FARnp3x7JE2dblY0VZKIJP7Gf7Ohjs%2F9Aa6UgtVMN%2FtYa56H%2BxzWsNSb3F1P">
+                <FaViber size={30} />
+              </Link>
+              <Link href="https://instagram.com/edukinniya">
+                <RiInstagramFill size={30} />
+              </Link>
+              <Link href="https://www.threads.net/edukinniya">
+                <FaSquareThreads size={30} />
+              </Link>
+              <Link href="https://twitter.com/Edukinniya">
+                <FaXTwitter size={30} />
+              </Link>
+            </div>
           </div>
         </div>
       </CardFooter>
