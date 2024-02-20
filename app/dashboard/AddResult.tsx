@@ -28,7 +28,7 @@ type Inputs = {
 };
 
 interface AddResultProps {
-  id: string;
+  id?: string;
 }
 const AddResult = ({ id }: AddResultProps) => {
   const router = useRouter();
