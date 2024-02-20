@@ -89,12 +89,14 @@ const DetailCard = ({ dataCount }: DetailCardProps) => {
                 className=""
                 src={AwardImg}
                 alt=""
-                height={160}
-                width={160}
+                height={120}
+                width={120}
               />
-              <h1 className="absolute pt-4 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 text-white font-bold text-2xl">
+              <h1 className="absolute top-1/3 left-1/2 pr-1 transform -translate-x-1/2 -translate-y-1/2 z-50  font-bold text-xl text-black">
                 {dataCount}
-                <p className="text-xs font-normal">Certificate Issued</p>
+                <p className="text-[8px] leading-[7px] font-normal">
+                  Certificate Issued
+                </p>
               </h1>
             </div>
           </div>

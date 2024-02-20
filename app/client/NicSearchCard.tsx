@@ -13,9 +13,10 @@ import axios from "axios";
 import React, { useState } from "react";
 
 interface ResulTableCellata {
-  courseDuration: number;
+  courseDuration: string;
   course: string;
   district: string;
+  gender: string;
   dob: string;
   name: string;
   town: string;
@@ -62,7 +63,7 @@ const NicSearchCard = ({
       <>
         {data.course && (
           <Button
-            className="w-full h-14 flex flex-col gap-1"
+            className="w-full h-14 flex flex-col gap-1 bg-blue-200 text-black"
             onClick={handleClick}
           >
             <h1>{data.course}</h1>
@@ -72,7 +73,7 @@ const NicSearchCard = ({
 
         {data.competition && (
           <Button
-            className="w-full h-14 flex flex-col gap-1"
+            className="w-full h-14 flex flex-col gap-1 bg-blue-200 text-black"
             onClick={handleClick}
           >
             <h1>{data.competition}</h1>

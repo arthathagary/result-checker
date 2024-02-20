@@ -71,6 +71,7 @@ interface DataTableProps<
 type Inputs = {
   _id: string;
   name: string;
+  gender: string;
   certificateNo: string;
   nic: string;
   town: string;

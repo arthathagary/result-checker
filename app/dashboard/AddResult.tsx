@@ -15,6 +15,7 @@ type Inputs = {
   certificateNo: string;
   nic: string;
   town: string;
+  gender: string;
   district: string;
   course: string;
   competition: string;
@@ -60,6 +61,7 @@ const AddResult = ({ id }: AddResultProps) => {
         setValue("certificateNo", firstRecord.certificateNo);
         setValue("name", firstRecord.name);
         setValue("nic", firstRecord.nic);
+        setValue("gender", firstRecord.gender);
         setValue("town", firstRecord.town);
         setValue("district", firstRecord.district);
         setValue("course", firstRecord.course);
@@ -207,7 +209,12 @@ const AddResult = ({ id }: AddResultProps) => {
               {...register("dob")}
               className="mb-4"
             />
-
+            <Input
+              type="text"
+              placeholder="Enter Gender"
+              {...register("gender")}
+              className="mb-4"
+            />
             <Input
               type="text"
               placeholder="Enter Town"

@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/connectDB";
 import Result from "@/models/Result";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       certificateNo,
       name,
       dob,
+      gender,
       town,
       district,
       course,
@@ -40,6 +41,7 @@ export async function POST(req: NextRequest) {
       certificateNo: certificateNo,
       name: name,
       dob: dob,
+      gender: gender,
       town: town,
       district: district,
       course: course,

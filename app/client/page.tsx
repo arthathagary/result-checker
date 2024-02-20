@@ -52,10 +52,11 @@ type Inputs = {
 };
 
 type ResulTableCellata = {
-  courseDuration: number;
+  courseDuration: string;
   course: string;
   district: string;
   dob: string;
+  gender: string;
   name: string;
   town: string;
   _id: string;
@@ -320,23 +321,38 @@ export default function ClientPage() {
                                 </TableHead>
                               </TableRow>
                               <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Name</TableHead>
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Name
+                                </TableHead>
                                 <TableCell>{certificate.name}</TableCell>
                               </TableRow>
                               <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Date of birth</TableHead>
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Date of birth
+                                </TableHead>
                                 <TableCell>
                                   {dateConvert(certificate.dob)}
                                 </TableCell>
                               </TableRow>
 
                               <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Town/Village</TableHead>
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Gender
+                                </TableHead>
+                                <TableCell>{certificate.gender}</TableCell>
+                              </TableRow>
+
+                              <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Town/Village
+                                </TableHead>
                                 <TableCell>{certificate.town}</TableCell>
                               </TableRow>
 
                               <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>District</TableHead>
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  District
+                                </TableHead>
                                 <TableCell>{certificate.district}</TableCell>
                               </TableRow>
                               <TableRow className="bg-black dark:bg-white">
@@ -347,34 +363,44 @@ export default function ClientPage() {
                                   Course / Competition Details
                                 </TableHead>
                               </TableRow>
-                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Course</TableHead>
+                              <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Course
+                                </TableHead>
                                 <TableCell>
                                   {certificate.course
                                     ? certificate.course
                                     : "-"}
                                 </TableCell>
                               </TableRow>
-                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Competition</TableHead>
+                              <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Competition
+                                </TableHead>
                                 <TableCell>
                                   {certificate.competition
                                     ? certificate.competition
                                     : "-"}
                                 </TableCell>
                               </TableRow>
-                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Duration</TableHead>
+                              <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Duration
+                                </TableHead>
                                 <TableCell>
                                   {certificate.courseDuration}
                                 </TableCell>
                               </TableRow>
-                              <TableRow className="bg-yellow-100 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Result</TableHead>
+                              <TableRow className="bg-purple-500 border-black text-white hover:text-black dark:hover:text-white">
+                                <TableHead className="text-white hover:text-black dark:hover:text-white">
+                                  Result
+                                </TableHead>
                                 <TableCell>{certificate.result}</TableCell>
                               </TableRow>
-                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Teacher/Lecture</TableHead>
+                              <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Teacher/Lecture
+                                </TableHead>
                                 <TableCell>
                                   {certificate.leactureName.map(
                                     (name, index) => (
@@ -383,20 +409,24 @@ export default function ClientPage() {
                                   )}
                                 </TableCell>
                               </TableRow>
-                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Founder of Edukinniya</TableHead>
+                              <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Founder of Edukinniya
+                                </TableHead>
                                 <TableCell>{certificate.founderName}</TableCell>
                               </TableRow>
-                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>
+                              <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
                                   Edukinniya&apos;s Registration Number
                                 </TableHead>
                                 <TableCell>
                                   {certificate.registrationNo}
                                 </TableCell>
                               </TableRow>
-                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
-                                <TableHead>Issue Date</TableHead>
+                              <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead className="dark:text-black dark:hover:text-white">
+                                  Issue Date
+                                </TableHead>
                                 <TableCell>
                                   {dateConvert(certificate.issueDate)}
                                 </TableCell>
@@ -424,7 +454,101 @@ export default function ClientPage() {
 
               <>
                 {isClicked && (
-                  <Table>
+                  // <Table>
+                  //   <TableHeader>
+                  //     <TableRow>
+                  //       <TableHead>Certificate Number</TableHead>
+                  //       <TableCell>{resultDataTable?.certificateNo}</TableCell>
+                  //     </TableRow>
+                  //     <TableRow className="bg-black dark:bg-white">
+                  //       <TableHead
+                  //         colSpan={2}
+                  //         className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                  //       >
+                  //         Personal Information
+                  //       </TableHead>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Name</TableHead>
+                  //       <TableCell>{resultDataTable?.name}</TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Date of birth</TableHead>
+                  //       <TableCell>
+                  //         {dateConvert(resultDataTable?.dob)}
+                  //       </TableCell>
+                  //     </TableRow>
+
+                  //     <TableRow>
+                  //       <TableHead>Town/Village</TableHead>
+                  //       <TableCell>{resultDataTable?.town}</TableCell>
+                  //     </TableRow>
+
+                  //     <TableRow>
+                  //       <TableHead>District</TableHead>
+                  //       <TableCell>{resultDataTable?.district}</TableCell>
+                  //     </TableRow>
+                  //     <TableRow className="bg-black dark:bg-white">
+                  //       <TableHead
+                  //         colSpan={2}
+                  //         className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                  //       >
+                  //         Course / Competition Details
+                  //       </TableHead>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Course</TableHead>
+                  //       <TableCell>
+                  //         {" "}
+                  //         {resultDataTable?.course
+                  //           ? resultDataTable.course
+                  //           : "-"}
+                  //       </TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Competition</TableHead>
+                  //       <TableCell>
+                  //         {" "}
+                  //         {resultDataTable?.competition
+                  //           ? resultDataTable.competition
+                  //           : "-"}
+                  //       </TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Duration</TableHead>
+                  //       <TableCell>{resultDataTable?.courseDuration}</TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Result</TableHead>
+                  //       <TableCell>{resultDataTable?.result}</TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Teacher/Lecture</TableHead>
+                  //       <TableCell>
+                  //         {resultDataTable?.leactureName.map((name, index) => (
+                  //           <p key={index}>{name}</p>
+                  //         ))}
+                  //       </TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Founder of Edukinniya</TableHead>
+                  //       <TableCell>{resultDataTable?.founderName}</TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>
+                  //         Edukinniya&apos;s Registration Number
+                  //       </TableHead>
+                  //       <TableCell>{resultDataTable?.registrationNo}</TableCell>
+                  //     </TableRow>
+                  //     <TableRow>
+                  //       <TableHead>Issue Date</TableHead>
+                  //       <TableCell>
+                  //         {dateConvert(resultDataTable?.issueDate)}
+                  //       </TableCell>
+                  //     </TableRow>
+                  //   </TableHeader>
+                  // </Table>
+                  <Table className="mb-8">
                     <TableHeader>
                       <TableRow>
                         <TableHead>Certificate Number</TableHead>
@@ -438,24 +562,39 @@ export default function ClientPage() {
                           Personal Information
                         </TableHead>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Name</TableHead>
+                      <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Name
+                        </TableHead>
                         <TableCell>{resultDataTable?.name}</TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Date of birth</TableHead>
+                      <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Date of birth
+                        </TableHead>
                         <TableCell>
                           {dateConvert(resultDataTable?.dob)}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
-                        <TableHead>Town/Village</TableHead>
+                      <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Gender
+                        </TableHead>
+                        <TableCell>{resultDataTable?.gender}</TableCell>
+                      </TableRow>
+
+                      <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Town/Village
+                        </TableHead>
                         <TableCell>{resultDataTable?.town}</TableCell>
                       </TableRow>
 
-                      <TableRow>
-                        <TableHead>District</TableHead>
+                      <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          District
+                        </TableHead>
                         <TableCell>{resultDataTable?.district}</TableCell>
                       </TableRow>
                       <TableRow className="bg-black dark:bg-white">
@@ -466,52 +605,64 @@ export default function ClientPage() {
                           Course / Competition Details
                         </TableHead>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Course</TableHead>
+                      <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Course
+                        </TableHead>
                         <TableCell>
-                          {" "}
                           {resultDataTable?.course
-                            ? resultDataTable.course
+                            ? resultDataTable?.course
                             : "-"}
                         </TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Competition</TableHead>
+                      <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Competition
+                        </TableHead>
                         <TableCell>
-                          {" "}
                           {resultDataTable?.competition
-                            ? resultDataTable.competition
+                            ? resultDataTable?.competition
                             : "-"}
                         </TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Duration</TableHead>
+                      <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Duration
+                        </TableHead>
                         <TableCell>{resultDataTable?.courseDuration}</TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Result</TableHead>
+                      <TableRow className="bg-purple-500 border-black text-white hover:text-black dark:hover:text-white">
+                        <TableHead className="text-white hover:text-black dark:hover:text-white">
+                          Result
+                        </TableHead>
                         <TableCell>{resultDataTable?.result}</TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Teacher/Lecture</TableHead>
+                      <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Teacher/Lecture
+                        </TableHead>
                         <TableCell>
                           {resultDataTable?.leactureName.map((name, index) => (
                             <p key={index}>{name}</p>
                           ))}
                         </TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Founder of Edukinniya</TableHead>
+                      <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Founder of Edukinniya
+                        </TableHead>
                         <TableCell>{resultDataTable?.founderName}</TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>
+                      <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
                           Edukinniya&apos;s Registration Number
                         </TableHead>
                         <TableCell>{resultDataTable?.registrationNo}</TableCell>
                       </TableRow>
-                      <TableRow>
-                        <TableHead>Issue Date</TableHead>
+                      <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
+                        <TableHead className="dark:text-black dark:hover:text-white">
+                          Issue Date
+                        </TableHead>
                         <TableCell>
                           {dateConvert(resultDataTable?.issueDate)}
                         </TableCell>

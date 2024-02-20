@@ -29,7 +29,7 @@ async function DataTablePage() {
       <h1 className=" text-center font-bold text-xl md:pt-32 mt-6 md:mt-0 mb-4 md:mb-0">
         All Records
       </h1>
-      <DataTable columns={columns} data={fetchData} />
+      {data && <DataTable columns={columns} data={fetchData} />}
     </div>
   );
 }

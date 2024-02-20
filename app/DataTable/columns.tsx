@@ -7,6 +7,7 @@ import { ArrowUpDown } from "lucide-react";
 export type Result = {
   _id: string;
   name: string;
+  gender: string;
   certificateNo: string;
   nic: string;
   town: string;
@@ -52,6 +53,10 @@ export const columns: ColumnDef<Result>[] = [
   {
     accessorKey: "nic",
     header: "Nic",
+  },
+  {
+    accessorKey: "gender",
+    header: "Gender",
   },
   {
     accessorKey: "town",
