@@ -61,14 +61,22 @@ const NicSearchCard = ({
     <div className="w-full">
       <>
         {data.course && (
-          <Button onClick={handleClick}>
+          <Button
+            className="w-full h-14 flex flex-col gap-1"
+            onClick={handleClick}
+          >
             <h1>{data.course}</h1>
+            <h1>{data.certificateNo}</h1>
           </Button>
         )}
 
         {data.competition && (
-          <Button onClick={handleClick}>
+          <Button
+            className="w-full h-14 flex flex-col gap-1"
+            onClick={handleClick}
+          >
             <h1>{data.competition}</h1>
+            <h1>{data.certificateNo}</h1>
           </Button>
         )}
       </>

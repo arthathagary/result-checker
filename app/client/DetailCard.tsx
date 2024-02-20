@@ -21,13 +21,17 @@ import {
   FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
-import { IoLogoWhatsapp } from "react-icons/io";
+import { IoLogoWhatsapp, IoIosMail } from "react-icons/io";
 import { RiInstagramFill } from "react-icons/ri";
+import AwardImg from "@/public/award.png";
 
-const DetailCard = () => {
+interface DetailCardProps {
+  dataCount: number;
+}
+const DetailCard = ({ dataCount }: DetailCardProps) => {
   const router = useRouter();
   const content =
-    "Resource Books, Teacher Guide, Notes, Reference Books, Model, Past Papers, Papers, Schemes, Support seminar papers, Evaluation reports, Youtube links, Online exams, University information, Course, Vacancy, Foreign scholarship, Competition, Education, Games etc";
+    "Resource Books, Teacher Guide, Notes, Reference Books, Model, Past Papers, Papers, Schemes, Support seminar papers, Evaluation reports, Youtube links, Online exams, University information, Course, Vacancy, Foreign scholarship, Competition, Education Games, Etc....";
 
   const [showMore, setShowMore] = useState(false);
 
@@ -78,15 +82,57 @@ const DetailCard = () => {
           >
             🌐 www.onlineexamsfree.com
           </Button>
-          <div className="flex flex-col items-center justify-center mb-2">
+          <div className="flex md:flex-row flex-col items-center justify-center mb-2">
             <Image src={qrImg} alt="" height={150} width={150} />
+            <div className="text-center relative">
+              <Image
+                className=""
+                src={AwardImg}
+                alt=""
+                height={160}
+                width={160}
+              />
+              <h1 className="absolute pt-4 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 text-white font-bold text-2xl">
+                {dataCount}
+                <p className="text-xs font-normal">Certificate Issued</p>
+              </h1>
+            </div>
           </div>
           <div>
-            <Link href="/contactus">
+            {/* <Link href="/contactus">
               <Button className="rounded-full bg-white text-[#030712] dark:bg-[#030712] dark:text-white hover:bg-[#222b44] hover:text-white transition-all duration-300 dark:hover:bg-[#353b4b] dark:hover:text-white mb-2">
                 Contact Us
               </Button>
-            </Link>
+            </Link> */}
+            <div className="flex flex-col md:flex-row md:gap-8 items-center justify-center mb-4 text-xs md:text-base">
+              <Link
+                href="https://wa.me/+94764242062"
+                className="flex items-center gap-2"
+                target="_blank"
+              >
+                <IoLogoWhatsapp size={20} />
+                <p>(+94) 764242062</p>
+              </Link>
+              <p className="hidden md:block">|</p>
+
+              <Link
+                href="https://wa.me/+94787328850"
+                className="flex items-center gap-2"
+                target="_blank"
+              >
+                <IoLogoWhatsapp size={20} />
+                <p>(+94) 787328850</p>
+              </Link>
+            </div>
+            <div className="flex  flex-col md:flex-row md:gap-8 items-center justify-center mb-4 text-xs md:text-base">
+              <Link
+                href="mailto:edukinniyalk@gmail.com"
+                className="flex items-center gap-2"
+              >
+                <IoIosMail size={20} />
+                <p>edukinniyalk@gmail.com</p>
+              </Link>
+            </div>
           </div>
           <div className="flex flex-col md:flex-row w-full items-center justify-center mt-4 gap-4">
             <div className="flex gap-4">
@@ -110,7 +156,7 @@ const DetailCard = () => {
               <Link href="https://instagram.com/edukinniya">
                 <RiInstagramFill size={30} />
               </Link>
-              <Link href="https://www.threads.net/edukinniya">
+              <Link href="https://www.threads.net/@edukinniya">
                 <FaSquareThreads size={30} />
               </Link>
               <Link href="https://twitter.com/Edukinniya">

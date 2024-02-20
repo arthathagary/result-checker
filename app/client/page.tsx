@@ -4,9 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { motion, useInView, useAnimation } from "framer-motion";
 import {
   Table,
   TableBody,
@@ -40,6 +41,11 @@ import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 import NicSearchCard from "./NicSearchCard";
+import CapIcon from "@/public/cap.png";
+import BookIcon from "@/public/book.png";
+import CertificateIcon from "@/public/certificate.png";
+
+import Image from "next/image";
 
 type Inputs = {
   search: string;
@@ -70,6 +76,17 @@ export default function ClientPage() {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const ref = useRef(null);
+  const isView = useInView(ref, { once: true });
+  const controlAnimation = useAnimation();
+  useEffect(() => {
+    if (isView) {
+      controlAnimation.start("visible");
+    } else {
+      controlAnimation.start("hidden");
+    }
+  }, [isView, controlAnimation]);
 
   const [resulTableCellata, setResulTableCellata] = useState<
     ResulTableCellata[] | null
@@ -180,308 +197,345 @@ export default function ClientPage() {
     fetchData();
   }, []);
   return (
-    <>
-      <Container>
-        <div
-          className={`md:grid ${
-            isFetched ? "md:grid-cols-2" : ""
-          } md:gap-8  md:mb-10`}
-        >
-          <Card className="flex flex-col items-center md:mt-32">
-            <CardHeader>
-              <CardTitle className="md:text-3xl text-xl text-center font-bold md:mb-4">
-                Certificate Verification
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-center text-xs md:text-base">
-                EduKinniya has issued{" "}
-                <span className="font-bold">{dataCount}</span> certificates.
-              </p>
-            </CardContent>
-            <CardContent>
-              <p className="text-center text-xs md:text-base">
-                Search for the details of the certificate by entering the
-                certificate number or NIC.
-              </p>
-            </CardContent>
-            <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-                <div className="grid w-full items-center gap-1.5">
-                  {/* <Label htmlFor="email">Search</Label> */}
-                  <div className="md:flex gap-4 mb-2">
-                    <div>
-                      <Select
+    <div ref={ref}>
+      <motion.div
+        variants={{
+          hidden: { x: "-100vw", opacity: 0 },
+          visible: { x: 0, opacity: 1 },
+        }}
+        initial="hidden"
+        animate={controlAnimation}
+        transition={{ type: "spring", stiffness: 100 }}
+      >
+        <Container>
+          <div
+            className={`md:grid ${
+              isFetched ? "md:grid-cols-2" : ""
+            } md:gap-8  md:mb-10`}
+          >
+            <Card className="flex flex-col items-center md:mt-32">
+              <CardHeader>
+                <CardTitle className="flex justify-between mb-4">
+                  <Image
+                    src={CapIcon}
+                    alt=""
+                    className="md:h-20 md:w-20 h-16 w-16"
+                  />
+                  <Image
+                    src={CertificateIcon}
+                    alt=""
+                    className="md:h-20 md:w-20 h-16 w-16"
+                  />
+                  <Image
+                    src={BookIcon}
+                    alt=""
+                    className="md:h-20 md:w-20 h-16 w-16"
+                  />
+                </CardTitle>
+                <CardTitle className="md:text-3xl text-xl text-center font-bold md:mb-4">
+                  Certificate Verification
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent>
+                <p className="text-center text-xs md:text-base">
+                  Search for the details of the certificate by entering the
+                  certificate number or NIC.
+                </p>
+              </CardContent>
+              <CardContent>
+                <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+                  <div className="grid w-full items-center gap-1.5">
+                    {/* <Label htmlFor="email">Search</Label> */}
+                    <div className="md:flex gap-4 mb-2">
+                      <div>
+                        <Select
+                          required
+                          value={selectedValue}
+                          onValueChange={handleSelectChange}
+                        >
+                          <SelectTrigger className="md:w-[180px] w-full mb-4 bg-[#111827] text-white dark:bg-[#F9FAFB] dark:text-[#030712]">
+                            <SelectValue placeholder="Certificate No" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="nic">NIC</SelectItem>
+                            <SelectItem value="certificateNo">
+                              Certificate No
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <Input
+                        type="text"
+                        id="search"
+                        placeholder="Enter Certificate Number or NIC"
+                        {...register("search")}
+                        className="w-full mb-4"
                         required
-                        value={selectedValue}
-                        onValueChange={handleSelectChange}
-                      >
-                        <SelectTrigger className="md:w-[180px] w-full mb-4 bg-[#111827] text-white dark:bg-[#F9FAFB] dark:text-[#030712]">
-                          <SelectValue placeholder="Certificate No" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="nic">NIC</SelectItem>
-                          <SelectItem value="certificateNo">
-                            Certificate No
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                      />
                     </div>
-                    <Input
-                      type="text"
-                      id="search"
-                      placeholder="Enter Certificate Number or NIC"
-                      {...register("search")}
-                      className="w-full mb-4"
-                      required
-                    />
                   </div>
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full flex gap-4 mb-6 "
-                  disabled={loading}
-                >
-                  Search
-                  {loading && <Spinner />}
-                </Button>
-                {error && (
-                  <p className="md:mb-6 mb-4 md:text-base text-sm text-center text-red-500">
-                    {error}
-                  </p>
-                )}
-                <CoverImg />
-              </form>
-            </CardContent>
-            {/* {loading && <p>Loading...</p>} */}
+                  <Button
+                    type="submit"
+                    className="w-full flex gap-4 mb-6 "
+                    disabled={loading}
+                  >
+                    Search
+                    {loading && <Spinner />}
+                  </Button>
+                  {error && (
+                    <p className="md:mb-6 mb-4 md:text-base text-sm text-center text-red-500">
+                      {error}
+                    </p>
+                  )}
+                  <CoverImg />
+                </form>
+              </CardContent>
+              {/* {loading && <p>Loading...</p>} */}
 
-            {resulTableCellata && Object.keys(resulTableCellata).length > 0 && (
-              <div
-                className={`flex justify-center items-center gap-4  ${
-                  resulTableCellata.length === 1 ? "w-full" : ""
-                }`}
-              >
-                {resulTableCellata.map((certificate, index) => (
-                  <div key={index} className="w-full">
-                    {resulTableCellata.length === 1 ? (
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Certificate Number</TableHead>
-                            <TableCell>{certificate.certificateNo}</TableCell>
-                          </TableRow>
-                          <TableRow className="bg-black dark:bg-white">
-                            <TableHead
-                              colSpan={2}
-                              className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
-                            >
-                              Personal Information
-                            </TableHead>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableCell>{certificate.name}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Date of birth</TableHead>
-                            <TableCell>
-                              {dateConvert(certificate.dob)}
-                            </TableCell>
-                          </TableRow>
+              {resulTableCellata &&
+                Object.keys(resulTableCellata).length > 0 && (
+                  <div
+                    className={`flex flex-col justify-center items-center w-full px-6  ${
+                      resulTableCellata.length === 1 ? "w-full" : ""
+                    }`}
+                  >
+                    {resulTableCellata.map((certificate, index) => (
+                      <div key={index} className="w-full">
+                        {resulTableCellata.length === 1 ? (
+                          <Table className="mb-8">
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Certificate Number</TableHead>
+                                <TableCell>
+                                  {certificate.certificateNo}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow className="bg-black dark:bg-white">
+                                <TableHead
+                                  colSpan={2}
+                                  className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                                >
+                                  Personal Information
+                                </TableHead>
+                              </TableRow>
+                              <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Name</TableHead>
+                                <TableCell>{certificate.name}</TableCell>
+                              </TableRow>
+                              <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Date of birth</TableHead>
+                                <TableCell>
+                                  {dateConvert(certificate.dob)}
+                                </TableCell>
+                              </TableRow>
 
-                          <TableRow>
-                            <TableHead>Town/Village</TableHead>
-                            <TableCell>{certificate.town}</TableCell>
-                          </TableRow>
+                              <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Town/Village</TableHead>
+                                <TableCell>{certificate.town}</TableCell>
+                              </TableRow>
 
-                          <TableRow>
-                            <TableHead>District</TableHead>
-                            <TableCell>{certificate.district}</TableCell>
-                          </TableRow>
-                          <TableRow className="bg-black dark:bg-white">
-                            <TableHead
-                              colSpan={2}
-                              className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
-                            >
-                              Course / Competition Details
-                            </TableHead>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Course</TableHead>
-                            <TableCell>
-                              {certificate.course ? certificate.course : "-"}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Competition</TableHead>
-                            <TableCell>
-                              {certificate.competition
-                                ? certificate.competition
-                                : "-"}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Duration</TableHead>
-                            <TableCell>{certificate.courseDuration}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Result</TableHead>
-                            <TableCell>{certificate.result}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Teacher/Lecture</TableHead>
-                            <TableCell>
-                              {certificate.leactureName.map((name, index) => (
-                                <p key={index}>{name}</p>
-                              ))}
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Founder of Edukinniya</TableHead>
-                            <TableCell>{certificate.founderName}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>
-                              Edukinniya&apos;s Registration Number
-                            </TableHead>
-                            <TableCell>{certificate.registrationNo}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableHead>Issue Date</TableHead>
-                            <TableCell>
-                              {dateConvert(certificate.issueDate)}
-                            </TableCell>
-                          </TableRow>
-                        </TableHeader>
-                      </Table>
-                    ) : (
-                      <>
-                        {!isClicked && (
-                          <div className="mb-6">
-                            <NicSearchCard
-                              data={certificate}
-                              onClick={handleClick}
-                              clickedEvt={isClicked}
-                              setClickedEvt={setIsClicked}
-                            />
-                          </div>
+                              <TableRow className="bg-blue-100 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>District</TableHead>
+                                <TableCell>{certificate.district}</TableCell>
+                              </TableRow>
+                              <TableRow className="bg-black dark:bg-white">
+                                <TableHead
+                                  colSpan={2}
+                                  className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                                >
+                                  Course / Competition Details
+                                </TableHead>
+                              </TableRow>
+                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Course</TableHead>
+                                <TableCell>
+                                  {certificate.course
+                                    ? certificate.course
+                                    : "-"}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Competition</TableHead>
+                                <TableCell>
+                                  {certificate.competition
+                                    ? certificate.competition
+                                    : "-"}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Duration</TableHead>
+                                <TableCell>
+                                  {certificate.courseDuration}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow className="bg-yellow-100 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Result</TableHead>
+                                <TableCell>{certificate.result}</TableCell>
+                              </TableRow>
+                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Teacher/Lecture</TableHead>
+                                <TableCell>
+                                  {certificate.leactureName.map(
+                                    (name, index) => (
+                                      <p key={index}>{name}</p>
+                                    )
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Founder of Edukinniya</TableHead>
+                                <TableCell>{certificate.founderName}</TableCell>
+                              </TableRow>
+                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>
+                                  Edukinniya&apos;s Registration Number
+                                </TableHead>
+                                <TableCell>
+                                  {certificate.registrationNo}
+                                </TableCell>
+                              </TableRow>
+                              <TableRow className="bg-gray-200 border-black dark:text-black dark:hover:text-white">
+                                <TableHead>Issue Date</TableHead>
+                                <TableCell>
+                                  {dateConvert(certificate.issueDate)}
+                                </TableCell>
+                              </TableRow>
+                            </TableHeader>
+                          </Table>
+                        ) : (
+                          <>
+                            {!isClicked && (
+                              <div className="mb-6">
+                                <NicSearchCard
+                                  data={certificate}
+                                  onClick={handleClick}
+                                  clickedEvt={isClicked}
+                                  setClickedEvt={setIsClicked}
+                                />
+                              </div>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            )}
+                )}
 
-            <>
-              {isClicked && (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Certificate Number</TableHead>
-                      <TableCell>{resultDataTable?.certificateNo}</TableCell>
-                    </TableRow>
-                    <TableRow className="bg-black dark:bg-white">
-                      <TableHead
-                        colSpan={2}
-                        className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
-                      >
-                        Personal Information
-                      </TableHead>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableCell>{resultDataTable?.name}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Date of birth</TableHead>
-                      <TableCell>{dateConvert(resultDataTable?.dob)}</TableCell>
-                    </TableRow>
+              <>
+                {isClicked && (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Certificate Number</TableHead>
+                        <TableCell>{resultDataTable?.certificateNo}</TableCell>
+                      </TableRow>
+                      <TableRow className="bg-black dark:bg-white">
+                        <TableHead
+                          colSpan={2}
+                          className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                        >
+                          Personal Information
+                        </TableHead>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableCell>{resultDataTable?.name}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Date of birth</TableHead>
+                        <TableCell>
+                          {dateConvert(resultDataTable?.dob)}
+                        </TableCell>
+                      </TableRow>
 
-                    <TableRow>
-                      <TableHead>Town/Village</TableHead>
-                      <TableCell>{resultDataTable?.town}</TableCell>
-                    </TableRow>
+                      <TableRow>
+                        <TableHead>Town/Village</TableHead>
+                        <TableCell>{resultDataTable?.town}</TableCell>
+                      </TableRow>
 
-                    <TableRow>
-                      <TableHead>District</TableHead>
-                      <TableCell>{resultDataTable?.district}</TableCell>
-                    </TableRow>
-                    <TableRow className="bg-black dark:bg-white">
-                      <TableHead
-                        colSpan={2}
-                        className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
-                      >
-                        Course / Competition Details
-                      </TableHead>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Course</TableHead>
-                      <TableCell>
-                        {" "}
-                        {resultDataTable?.course ? resultDataTable.course : "-"}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Competition</TableHead>
-                      <TableCell>
-                        {" "}
-                        {resultDataTable?.competition
-                          ? resultDataTable.competition
-                          : "-"}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Duration</TableHead>
-                      <TableCell>{resultDataTable?.courseDuration}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Result</TableHead>
-                      <TableCell>{resultDataTable?.result}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Teacher/Lecture</TableHead>
-                      <TableCell>
-                        {resultDataTable?.leactureName.map((name, index) => (
-                          <p key={index}>{name}</p>
-                        ))}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Founder of Edukinniya</TableHead>
-                      <TableCell>{resultDataTable?.founderName}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>
-                        Edukinniya&apos;s Registration Number
-                      </TableHead>
-                      <TableCell>{resultDataTable?.registrationNo}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableHead>Issue Date</TableHead>
-                      <TableCell>
-                        {dateConvert(resultDataTable?.issueDate)}
-                      </TableCell>
-                    </TableRow>
-                  </TableHeader>
-                </Table>
-              )}
-            </>
+                      <TableRow>
+                        <TableHead>District</TableHead>
+                        <TableCell>{resultDataTable?.district}</TableCell>
+                      </TableRow>
+                      <TableRow className="bg-black dark:bg-white">
+                        <TableHead
+                          colSpan={2}
+                          className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                        >
+                          Course / Competition Details
+                        </TableHead>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Course</TableHead>
+                        <TableCell>
+                          {" "}
+                          {resultDataTable?.course
+                            ? resultDataTable.course
+                            : "-"}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Competition</TableHead>
+                        <TableCell>
+                          {" "}
+                          {resultDataTable?.competition
+                            ? resultDataTable.competition
+                            : "-"}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Duration</TableHead>
+                        <TableCell>{resultDataTable?.courseDuration}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Result</TableHead>
+                        <TableCell>{resultDataTable?.result}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Teacher/Lecture</TableHead>
+                        <TableCell>
+                          {resultDataTable?.leactureName.map((name, index) => (
+                            <p key={index}>{name}</p>
+                          ))}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Founder of Edukinniya</TableHead>
+                        <TableCell>{resultDataTable?.founderName}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>
+                          Edukinniya&apos;s Registration Number
+                        </TableHead>
+                        <TableCell>{resultDataTable?.registrationNo}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableHead>Issue Date</TableHead>
+                        <TableCell>
+                          {dateConvert(resultDataTable?.issueDate)}
+                        </TableCell>
+                      </TableRow>
+                    </TableHeader>
+                  </Table>
+                )}
+              </>
 
-            {!loading &&
-              !error &&
-              resulTableCellata &&
-              Object.keys(resulTableCellata).length === 0 && (
-                <p>No details found.</p>
-              )}
-          </Card>
-          <div> {isFetched && <DetailCard />}</div>
-        </div>
-      </Container>
+              {!loading &&
+                !error &&
+                resulTableCellata &&
+                Object.keys(resulTableCellata).length === 0 && (
+                  <p>No details found.</p>
+                )}
+            </Card>
+            <div> {isFetched && <DetailCard dataCount={dataCount} />}</div>
+          </div>
+        </Container>
+      </motion.div>
       <div>
         <Footer />
       </div>
       <Toaster />
-    </>
+    </div>
   );
 }

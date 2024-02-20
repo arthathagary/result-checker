@@ -2,22 +2,13 @@
 import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
 import axios from "axios";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Calendar } from "./Calender";
 
 type Inputs = {
   name: string;
@@ -29,7 +20,7 @@ type Inputs = {
   competition: string;
   courseDuration: string;
   result: string;
-  leactureName: string;
+  lectureName: string;
   founderName: string;
   registrationNo: string;
   issueDate: string;
@@ -64,6 +55,8 @@ const AddResult = ({ id }: AddResultProps) => {
         const response = await axios.get(`/api/results/${id}`);
         const { data } = response;
         const firstRecord = data[0];
+        // console.log("firstRecord", firstRecord.leactureName.join(","));
+
         setValue("certificateNo", firstRecord.certificateNo);
         setValue("name", firstRecord.name);
         setValue("nic", firstRecord.nic);
@@ -73,11 +66,11 @@ const AddResult = ({ id }: AddResultProps) => {
         setValue("competition", firstRecord.competition);
         setValue("courseDuration", firstRecord.courseDuration);
         setValue("result", firstRecord.result);
-        setValue("leactureName", firstRecord.leactureName);
+        setValue("lectureName", firstRecord.leactureName.join(","));
         setValue("founderName", firstRecord.founderName);
         setValue("registrationNo", firstRecord.registrationNo);
-        // setValue("issueDate", firstRecord.issueDate);
-        // setValue("dob", firstRecord.dob);
+        setValue("issueDate", firstRecord.issueDate);
+        setValue("dob", firstRecord.dob);
 
         // Do something with the fetched data if needed
       } catch (error) {
@@ -98,42 +91,65 @@ const AddResult = ({ id }: AddResultProps) => {
     try {
       setLoading(true);
       if (!id) {
-        const formattedDobDate = dobdate ? format(dobdate, "yyyy-MM-dd") : null;
-        const formattedIssueDate = issueDate
-          ? format(issueDate, "yyyy-MM-dd")
-          : null;
+        // const formattedDobDate = dobdate ? format(dobdate, "yyyy-MM-dd") : null;
+        // const formattedIssueDate = issueDate
+        //   ? format(issueDate, "yyyy-MM-dd")
+        //   : null;
+        if (data.lectureName) {
+          const lectureData = {
+            teacherNames: data.lectureName
+              .split(",")
+              .map((name) => name.trim()),
+          };
+          const response = await axios.post("/api/results", {
+            ...data,
+            // dob: formattedDobDate,
+            // issueDate: formattedIssueDate,
+            lectureName: lectureData,
+          });
 
-        const lectureData = {
-          teacherNames: data.leactureName.split(",").map((name) => name.trim()),
-        };
-        const response = await axios.post("/api/results", {
-          ...data,
-          dob: formattedDobDate,
-          issueDate: formattedIssueDate,
-          leactureName: lectureData,
-        });
+          toast({
+            title: "Success",
+            description: "Record added successfully.",
+          });
+
+          router.refresh();
+        } else {
+          const response = await axios.post("/api/results", {
+            ...data,
+          });
+
+          toast({
+            title: "Success",
+            description: "Record added successfully.",
+          });
+
+          router.refresh();
+        }
+      } else {
+        if (data.lectureName) {
+          const lectureData = {
+            teacherNames: data.lectureName
+              .split(",")
+              .map((name) => name.trim()),
+          };
+          const response = await axios.put(`/api/results/${id}`, {
+            ...data,
+            lectureName: lectureData.teacherNames,
+          });
+          console.log("data", lectureData);
+        } else {
+          const response = await axios.put(`/api/results/${id}`, {
+            ...data,
+          });
+        }
 
         toast({
           title: "Success",
-          description: "Record added successfully.",
+          description: "Record updated successfully.",
         });
 
         router.refresh();
-      } else {
-        // const response = await axios.put(`/api/results/${id}`, {
-        //   ...data,
-        //   dob: formattedDobDate,
-        //   issueDate: formattedIssueDate,
-        //   leactureName: lectureData,
-        // });
-        console.log("data", data);
-
-        // toast({
-        //   title: "Success",
-        //   description: "Record updated successfully.",
-        // });
-
-        // router.push("/dashboard");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -156,7 +172,11 @@ const AddResult = ({ id }: AddResultProps) => {
     <div>
       <div className="">
         <div>
-          <h1 className="md:pt-32 text-center font-bold mb-4 text-xl">
+          <h1
+            className={`${
+              !id ? "md:pt-32" : ""
+            } text-center font-bold mb-4 text-xl`}
+          >
             {id ? "Edit Records" : "Add Records"}
           </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="overflow-y-auto">
@@ -180,34 +200,13 @@ const AddResult = ({ id }: AddResultProps) => {
               {...register("nic")}
               className="mb-4"
             />
-            {/* <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal mb-4",
-                    !dobdate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dobdate ? (
-                    format(dobdate, "PPP")
-                  ) : (
-                    <span>Pick Date of birth</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="start" className=" w-auto p-0">
-                <Calendar
-                  mode="single"
-                  captionLayout="dropdown-buttons"
-                  selected={dobdate}
-                  onSelect={setDobDate}
-                  fromYear={1960}
-                  toYear={2030}
-                />
-              </PopoverContent>
-            </Popover> */}
+
+            <Input
+              type="text"
+              placeholder="Date of birth (YYYY-MM-DD)"
+              {...register("dob")}
+              className="mb-4"
+            />
 
             <Input
               type="text"
@@ -248,7 +247,7 @@ const AddResult = ({ id }: AddResultProps) => {
             <Input
               type="text"
               placeholder="Enter Lecture Names (comma-separated)"
-              {...register("leactureName")}
+              {...register("lectureName")}
               className="mb-4"
             />
             <Input
@@ -263,34 +262,13 @@ const AddResult = ({ id }: AddResultProps) => {
               {...register("registrationNo")}
               className="mb-4"
             />
-            {/* <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal mb-4",
-                    !issueDate && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {issueDate ? (
-                    format(issueDate, "PPP")
-                  ) : (
-                    <span>Select Issue Date</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="start" className=" w-auto p-0">
-                <Calendar
-                  mode="single"
-                  captionLayout="dropdown-buttons"
-                  selected={issueDate}
-                  onSelect={setIssueDate}
-                  fromYear={1960}
-                  toYear={2030}
-                />
-              </PopoverContent>
-            </Popover> */}
+
+            <Input
+              type="text"
+              placeholder="Issue Date (YYYY-MM-DD)"
+              {...register("issueDate")}
+              className="mb-4"
+            />
             <Button
               disabled={loading}
               type="submit"
