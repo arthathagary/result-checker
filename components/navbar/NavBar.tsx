@@ -1,6 +1,7 @@
 import Container from "../Container";
 import { ModeToggle } from "../modetoggle";
 import Logo from "./Logo";
+import Logout from "./Logout";
 
 const Navbar = () => {
   return (
@@ -22,8 +23,13 @@ const Navbar = () => {
             
           "
           >
-            <Logo />
-            <ModeToggle />
+            <div>
+              <Logo />
+            </div>
+            <div className="flex items-center gap-4">
+              <Logout />
+              <ModeToggle />
+            </div>
           </div>
         </Container>
       </div>

@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar/NavBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Edu Kinniya",
+  title: "EduKinniya",
   description: "Check your results online",
 };
 
@@ -25,10 +26,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <>
+        <Head>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+      </>
       <body className={poppins.className}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

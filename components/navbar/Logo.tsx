@@ -22,10 +22,8 @@ const Logo = () => {
     <div className="inline-block">
       <Image
         onClick={handleClick}
-        className="block cursor-pointer border-2 dark:border-[#030712] rounded-full"
+        className="block cursor-pointer border-2 dark:border-[#030712] h-14 w-14 md:h-16 md:w-16 rounded-full"
         src={logo}
-        height="50"
-        width="50"
         alt="Logo"
       />
     </div>

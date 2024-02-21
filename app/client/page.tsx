@@ -304,10 +304,12 @@ export default function ClientPage() {
                     {resulTableCellata.map((certificate, index) => (
                       <div key={index} className="w-full">
                         {resulTableCellata.length === 1 ? (
-                          <Table className="mb-8">
+                          <Table className="mb-8 table-result">
                             <TableHeader>
                               <TableRow>
-                                <TableHead>Certificate Number</TableHead>
+                                <TableHead className="font-bold dark:text-white">
+                                  Certificate Number
+                                </TableHead>
                                 <TableCell>
                                   {certificate.certificateNo}
                                 </TableCell>
@@ -315,7 +317,7 @@ export default function ClientPage() {
                               <TableRow className="bg-black dark:bg-white">
                                 <TableHead
                                   colSpan={2}
-                                  className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                                  className="text-white dark:text-black hover:bg-black dark:hover:bg-white font-bold"
                                 >
                                   Personal Information
                                 </TableHead>
@@ -358,7 +360,7 @@ export default function ClientPage() {
                               <TableRow className="bg-black dark:bg-white">
                                 <TableHead
                                   colSpan={2}
-                                  className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                                  className="text-white dark:text-black hover:bg-black dark:hover:bg-white font-bold"
                                 >
                                   Course / Competition Details
                                 </TableHead>
@@ -417,7 +419,7 @@ export default function ClientPage() {
                               </TableRow>
                               <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
                                 <TableHead className="dark:text-black dark:hover:text-white">
-                                  Edukinniya&apos;s Registration Number
+                                  Edukinniya&apos;s Gov Reg No
                                 </TableHead>
                                 <TableCell>
                                   {certificate.registrationNo}
@@ -548,16 +550,18 @@ export default function ClientPage() {
                   //     </TableRow>
                   //   </TableHeader>
                   // </Table>
-                  <Table className="mb-8">
+                  <Table className="mb-8 table-result">
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Certificate Number</TableHead>
+                        <TableHead className="font-bold dark:text-white">
+                          Certificate Number
+                        </TableHead>
                         <TableCell>{resultDataTable?.certificateNo}</TableCell>
                       </TableRow>
                       <TableRow className="bg-black dark:bg-white">
                         <TableHead
                           colSpan={2}
-                          className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                          className="text-white dark:text-black hover:bg-black dark:hover:bg-white font-bold"
                         >
                           Personal Information
                         </TableHead>
@@ -600,7 +604,7 @@ export default function ClientPage() {
                       <TableRow className="bg-black dark:bg-white">
                         <TableHead
                           colSpan={2}
-                          className="text-white dark:text-black hover:bg-black dark:hover:bg-white"
+                          className="text-white dark:text-black hover:bg-black dark:hover:bg-white font-bold"
                         >
                           Course / Competition Details
                         </TableHead>
@@ -655,7 +659,7 @@ export default function ClientPage() {
                       </TableRow>
                       <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
                         <TableHead className="dark:text-black dark:hover:text-white">
-                          Edukinniya&apos;s Registration Number
+                          Edukinniya&apos;s Gov Reg No
                         </TableHead>
                         <TableCell>{resultDataTable?.registrationNo}</TableCell>
                       </TableRow>

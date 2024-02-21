@@ -39,10 +39,18 @@ const AddResult = ({ id }: AddResultProps) => {
     watch,
     setValue,
     formState: { errors },
+    reset,
   } = useForm<Inputs>();
 
   const [dobdate, setDobDate] = useState<Date>();
   const [issueDate, setIssueDate] = useState<Date>();
+  const dateConvert = (date: any) => {
+    if (!date) {
+      return "";
+    }
+    const dateObj = new Date(date);
+    return dateObj.toISOString().split("T")[0];
+  };
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,8 +79,8 @@ const AddResult = ({ id }: AddResultProps) => {
         setValue("lectureName", firstRecord.leactureName.join(","));
         setValue("founderName", firstRecord.founderName);
         setValue("registrationNo", firstRecord.registrationNo);
-        setValue("issueDate", firstRecord.issueDate);
-        setValue("dob", firstRecord.dob);
+        setValue("issueDate", dateConvert(firstRecord.issueDate));
+        setValue("dob", dateConvert(firstRecord.dob));
 
         // Do something with the fetched data if needed
       } catch (error) {
@@ -110,10 +118,10 @@ const AddResult = ({ id }: AddResultProps) => {
             lectureName: lectureData,
           });
 
-          toast({
-            title: "Success",
-            description: "Record added successfully.",
-          });
+          // toast({
+          //   title: "Success",
+          //   description: "Record added successfully.",
+          // });
 
           router.refresh();
         } else {
@@ -121,10 +129,10 @@ const AddResult = ({ id }: AddResultProps) => {
             ...data,
           });
 
-          toast({
-            title: "Success",
-            description: "Record added successfully.",
-          });
+          // toast({
+          //   title: "Success",
+          //   description: "Record added successfully.",
+          // });
 
           router.refresh();
         }
@@ -146,13 +154,19 @@ const AddResult = ({ id }: AddResultProps) => {
           });
         }
 
-        toast({
-          title: "Success",
-          description: "Record updated successfully.",
-        });
+        // toast({
+        //   title: "Success",
+        //   description: "Record updated successfully.",
+        // });
 
         router.refresh();
       }
+      toast({
+        title: "Success",
+        description: id
+          ? "Record updated successfully."
+          : "Record added successfully.",
+      });
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
@@ -163,6 +177,7 @@ const AddResult = ({ id }: AddResultProps) => {
       });
     } finally {
       setLoading(false);
+      reset();
     }
   };
 
