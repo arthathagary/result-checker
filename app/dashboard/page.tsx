@@ -1,14 +1,10 @@
-import Container from "@/components/Container";
 import DataTablePage from "@/app/DataTable/page";
 import AddResult from "@/app/dashboard/AddResult";
+import Container from "@/components/Container";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 const Dashboard = () => {
-  // const { data: session } = useSession();
-  // if (!session) {
-  //   return <div>loading...</div>;
-  // }
   return (
     <Container>
       <div className="md:grid md:grid-cols-4">

@@ -1,6 +1,6 @@
-import axios from "axios";
 import { Result, columns } from "@/app/DataTable/columns";
 import { DataTable } from "@/app/DataTable/data-table";
+import axios from "axios";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -29,7 +29,11 @@ async function DataTablePage() {
       <h1 className=" text-center font-bold text-xl md:pt-32 mt-6 md:mt-0 mb-4 md:mb-0">
         All Records
       </h1>
-      {data && <DataTable columns={columns} data={fetchData} />}
+      {fetchData && fetchData.length > 0 ? (
+        <DataTable columns={columns} data={fetchData} />
+      ) : (
+        <p className="text-center">No records found</p>
+      )}
     </div>
   );
 }

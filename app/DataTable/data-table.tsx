@@ -52,15 +52,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash, Edit } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useForm } from "react-hook-form";
 import { deleteData } from "../actions/deleteData";
-import { editData } from "../actions/editData";
 import AddResult from "../dashboard/AddResult";
-import { Controller, useForm } from "react-hook-form";
-import axios from "axios";
-import { getData } from "../actions/getData";
 interface DataTableProps<
   TData extends { _id: string; certificateNo: string },
   TValue

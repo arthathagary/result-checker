@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/components/ui/use-toast";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -181,10 +180,6 @@ const AddResult = ({ id }: AddResultProps) => {
     }
   };
 
-  const { data: session } = useSession();
-  if (!session) {
-    return <div>loading...</div>;
-  }
   return (
     <div>
       <div className="">

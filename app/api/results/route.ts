@@ -1,5 +1,6 @@
 import connectDB from "@/lib/connectDB";
 import Result from "@/models/Result";
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -17,6 +18,11 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const token = await getToken({ req, secret: process.env.SECRET });
+  if (!token) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     await connectDB();
     const {

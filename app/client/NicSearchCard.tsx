@@ -1,16 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import {
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableCell,
-  Table,
-} from "@/components/ui/table";
-import axios from "axios";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface ResulTableCellata {
   courseDuration: string;

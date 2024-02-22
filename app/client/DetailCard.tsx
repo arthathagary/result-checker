@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import AwardImg from "@/public/award.png";
 import { useState } from "react";
 import {
   FaFacebook,
@@ -21,9 +22,8 @@ import {
   FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
-import { IoLogoWhatsapp, IoIosMail } from "react-icons/io";
+import { IoIosMail, IoLogoWhatsapp } from "react-icons/io";
 import { RiInstagramFill } from "react-icons/ri";
-import AwardImg from "@/public/award.png";
 
 interface DetailCardProps {
   dataCount: number;

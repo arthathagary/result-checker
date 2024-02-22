@@ -1,6 +1,7 @@
 import connectDB from "@/lib/connectDB";
 import { NextRequest, NextResponse } from "next/server";
 import Result from "@/models/Result";
+import { getToken } from "next-auth/jwt";
 
 interface IParam {
   resultId: string;
@@ -18,6 +19,10 @@ export async function GET(req: NextRequest, { params }: { params: IParam }) {
 
 // PUT endpoint
 export async function PUT(req: NextRequest, { params }: { params: IParam }) {
+  const token = await getToken({ req, secret: process.env.SECRET });
+  if (!token) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   const { resultId } = params;
   const body = await req.json();
   try {
@@ -45,6 +50,10 @@ export async function PUT(req: NextRequest, { params }: { params: IParam }) {
 
 // DELETE endpoint
 export async function DELETE(req: NextRequest, { params }: { params: IParam }) {
+  const token = await getToken({ req, secret: process.env.SECRET });
+  if (!token) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   const { resultId } = params;
 
   try {
