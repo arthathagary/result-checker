@@ -25,6 +25,7 @@ export async function PUT(req: NextRequest, { params }: { params: IParam }) {
   }
   const { resultId } = params;
   const body = await req.json();
+
   try {
     await connectDB();
     const result = await Result.findOneAndUpdate(

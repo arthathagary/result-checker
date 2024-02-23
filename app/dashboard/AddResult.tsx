@@ -20,7 +20,7 @@ type Inputs = {
   competition: string;
   courseDuration: string;
   result: string;
-  lectureName: string;
+  leactureName: string;
   founderName: string;
   registrationNo: string;
   issueDate: string;
@@ -75,7 +75,7 @@ const AddResult = ({ id }: AddResultProps) => {
         setValue("competition", firstRecord.competition);
         setValue("courseDuration", firstRecord.courseDuration);
         setValue("result", firstRecord.result);
-        setValue("lectureName", firstRecord.leactureName.join(","));
+        setValue("leactureName", firstRecord.leactureName.join(","));
         setValue("founderName", firstRecord.founderName);
         setValue("registrationNo", firstRecord.registrationNo);
         setValue("issueDate", dateConvert(firstRecord.issueDate));
@@ -104,9 +104,9 @@ const AddResult = ({ id }: AddResultProps) => {
         // const formattedIssueDate = issueDate
         //   ? format(issueDate, "yyyy-MM-dd")
         //   : null;
-        if (data.lectureName) {
+        if (data.leactureName) {
           const lectureData = {
-            teacherNames: data.lectureName
+            teacherNames: data.leactureName
               .split(",")
               .map((name) => name.trim()),
           };
@@ -136,9 +136,9 @@ const AddResult = ({ id }: AddResultProps) => {
           router.refresh();
         }
       } else {
-        if (data.lectureName) {
+        if (data.leactureName) {
           const lectureData = {
-            teacherNames: data.lectureName
+            teacherNames: data.leactureName
               .split(",")
               .map((name) => name.trim()),
           };
@@ -264,7 +264,7 @@ const AddResult = ({ id }: AddResultProps) => {
             <Input
               type="text"
               placeholder="Enter Lecture Names (comma-separated)"
-              {...register("lectureName")}
+              {...register("leactureName")}
               className="mb-4"
             />
             <Input
