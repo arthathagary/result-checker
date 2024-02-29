@@ -175,20 +175,21 @@ export default function ClientPage() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    controlAnimation.start("visible");
-  }, [controlAnimation]);
+  // useEffect(() => {
+  //   controlAnimation.start("visible");
+  // }, [controlAnimation]);
   return (
-    <motion.div
-      ref={ref}
-      variants={{
-        hidden: { y: "100vw", opacity: 0 },
-        visible: { y: 0, opacity: 1 },
-      }}
-      initial="hidden"
-      animate={controlAnimation}
-      transition={{ type: "spring", stiffness: 50 }}
-    >
+    // <motion.div
+    //   ref={ref}
+    //   variants={{
+    //     hidden: { y: "100vw", opacity: 0 },
+    //     visible: { y: 0, opacity: 1 },
+    //   }}
+    //   initial="hidden"
+    //   animate={controlAnimation}
+    //   transition={{ type: "spring", stiffness: 50 }}
+    // >
+    <>
       <Container>
         <div
           className={`md:grid ${
@@ -572,6 +573,7 @@ export default function ClientPage() {
       <div>
         <Footer />
       </div>
-    </motion.div>
+    </>
+    // </motion.div>
   );
 }

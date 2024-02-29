@@ -29,6 +29,10 @@ export default function RootLayout({
       <>
         <Head>
           <link rel="icon" href="/favicon.ico" />
+          <meta
+            name="google-site-verification"
+            content="oeuq7GgRn9Tyh9g0rCjHYBYWBgRIlHlseVqsFsAn6X8"
+          />
         </Head>
       </>
       <body className={poppins.className}>
