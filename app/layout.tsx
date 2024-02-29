@@ -17,6 +17,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "EduKinniya",
   description: "Check your results online",
+  verification: {
+    google: "oeuq7GgRn9Tyh9g0rCjHYBYWBgRIlHlseVqsFsAn6X8",
+  },
 };
 
 export default function RootLayout({
@@ -29,10 +32,6 @@ export default function RootLayout({
       <>
         <Head>
           <link rel="icon" href="/favicon.ico" />
-          <meta
-            name="google-site-verification"
-            content="oeuq7GgRn9Tyh9g0rCjHYBYWBgRIlHlseVqsFsAn6X8"
-          />
         </Head>
       </>
       <body className={poppins.className}>
