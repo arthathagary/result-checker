@@ -67,6 +67,7 @@ export default function ClientPage() {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+  const [selectedValue, setSelectedValue] = useState("certificateNo");
 
   const ref = useRef(null);
   const isView = useInView(ref, { once: true });
@@ -84,7 +85,6 @@ export default function ClientPage() {
   >(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedValue, setSelectedValue] = useState("certificateNo");
   const [isFetched, setIsFetched] = useState(true);
   const [isClicked, setIsClicked] = useState(false);
   const [resultDataTable, setResultDataTable] =
