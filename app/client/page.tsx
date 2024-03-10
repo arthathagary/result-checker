@@ -234,6 +234,7 @@ export default function ClientPage() {
                       <Select
                         required
                         value={selectedValue}
+                        defaultValue="certificateNo"
                         onValueChange={handleSelectChange}
                       >
                         <SelectTrigger className="md:w-[180px] w-full mb-4 bg-[#111827] text-white dark:bg-[#F9FAFB] dark:text-[#030712]">
