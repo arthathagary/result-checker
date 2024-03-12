@@ -266,6 +266,7 @@ const AddResult = ({ id }: AddResultProps) => {
               placeholder="Enter Lecture Names (comma-separated)"
               {...register("leactureName")}
               className="mb-4"
+              required
             />
             <Input
               type="text"
