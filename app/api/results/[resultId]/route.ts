@@ -23,27 +23,86 @@ export async function PUT(req: NextRequest, { params }: { params: IParam }) {
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-  const { resultId } = params;
-  const body = await req.json();
+  // const { resultId } = params;
+  // const body = await req.json();
 
   try {
     await connectDB();
-    const result = await Result.findOneAndUpdate(
+    const { resultId } = params;
+    const {
+      certificateNo,
+      name,
+      dob,
+      gender,
+      town,
+      district,
+      course,
+      competition,
+      courseDuration,
+      result,
+      lectureName,
+      founderName,
+      registrationNo,
+      issueDate,
+      nic,
+    } = await req.json();
+
+    // Find the existing result
+    // const result2 = await Result.findOne({ certificateNo: resultId });
+    // if (!result2) {
+    //   return NextResponse.json(
+    //     { message: "Result not found" },
+    //     { status: 404 }
+    //   );
+    // }
+
+    // Handle lectureName update carefully
+    // if (body.lectureName && body.lectureName.teacherNames) {
+    //   result.lectureName = body.lectureName.teacherNames; // Directly assign the new teacherNames array
+    // }
+
+    const person = new Result({
+      certificateNo: certificateNo,
+      name: name,
+      dob: dob,
+      gender: gender,
+      town: town,
+      district: district,
+      course: course,
+      competition: competition,
+      courseDuration: courseDuration,
+      result: result,
+      leactureName: lectureName.teacherNames,
+      founderName: founderName,
+      registrationNo: registrationNo,
+      issueDate: issueDate,
+      nic: nic.toUpperCase(),
+    });
+    // Update other fields
+    const result2 = await Result.findOneAndUpdate(
       { certificateNo: resultId },
-      body,
       {
-        new: true,
+        $set: {
+          certificateNo: certificateNo,
+          name: name,
+          dob: dob,
+          gender: gender,
+          town: town,
+          district: district,
+          course: course,
+          competition: competition,
+          courseDuration: courseDuration,
+          result: result,
+          leactureName: lectureName.teacherNames,
+          founderName: founderName,
+          registrationNo: registrationNo,
+          issueDate: issueDate,
+          nic: nic.toUpperCase(),
+        },
       }
     );
 
-    if (!result) {
-      return NextResponse.json(
-        { message: "Result not found" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(result, { status: 200 });
+    return NextResponse.json(result2, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: `Error: ${error}` }, { status: 500 });
   }

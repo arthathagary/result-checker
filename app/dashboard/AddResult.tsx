@@ -144,7 +144,7 @@ const AddResult = ({ id }: AddResultProps) => {
           };
           const response = await axios.put(`/api/results/${id}`, {
             ...data,
-            lectureName: lectureData.teacherNames,
+            lectureName: lectureData,
           });
           console.log("data", lectureData);
         } else {

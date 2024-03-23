@@ -31,7 +31,7 @@
     "middleware.js",
     "app/Providers.js",
     "app/api/auth/[...nextauth]/route.ts",
-    "app/client/CertificateDownloader.js"
+    "app/(client)/CertificateDownloader.js"
   ],
   "exclude": ["node_modules"]
 }

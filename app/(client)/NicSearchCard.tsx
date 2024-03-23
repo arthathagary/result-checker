@@ -54,7 +54,7 @@ const NicSearchCard = ({
       <>
         {data.course && (
           <Button
-            className="w-full h-14 flex flex-col gap-1 bg-blue-200 text-black"
+            className="w-full h-14 flex flex-col gap-1 bg-blue-200 text-black hover:text-white dark:hover:text-black"
             onClick={handleClick}
           >
             <h1>{data.course}</h1>
@@ -64,7 +64,7 @@ const NicSearchCard = ({
 
         {data.competition && (
           <Button
-            className="w-full h-14 flex flex-col gap-1 bg-blue-200 text-black"
+            className="w-full h-14 flex flex-col gap-1 bg-blue-200 text-black  hover:text-white dark:hover:text-black"
             onClick={handleClick}
           >
             <h1>{data.competition}</h1>

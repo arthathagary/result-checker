@@ -376,7 +376,19 @@ export default function ClientPage() {
                               Result
                             </TableHead>
                             <TableCell className="font-bold">
-                              {certificate.result}
+                              {certificate.result ? (
+                                certificate.result.includes(",") ? (
+                                  certificate.result
+                                    .split(",")
+                                    .map((resultItem, itemIndex) => (
+                                      <p key={itemIndex}>{resultItem.trim()}</p>
+                                    ))
+                                ) : (
+                                  <p>{certificate.result}</p>
+                                )
+                              ) : (
+                                "-"
+                              )}
                             </TableCell>
                           </TableRow>
                           <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
@@ -522,7 +534,19 @@ export default function ClientPage() {
                         Result
                       </TableHead>
                       <TableCell className="font-bold">
-                        {resultDataTable?.result}
+                        {resultDataTable?.result ? (
+                          resultDataTable?.result.includes(",") ? (
+                            resultDataTable?.result
+                              .split(",")
+                              .map((resultItem, itemIndex) => (
+                                <p key={itemIndex}>{resultItem.trim()}</p>
+                              ))
+                          ) : (
+                            <p>{resultDataTable?.result}</p>
+                          )
+                        ) : (
+                          "-"
+                        )}
                       </TableCell>
                     </TableRow>
                     <TableRow className="bg-pink-200 border-black dark:text-black dark:hover:text-white">
