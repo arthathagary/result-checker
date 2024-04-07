@@ -5,7 +5,7 @@ export default async function ClientLayout({
 }) {
   return (
     <>
-      <div className="">{children}</div>
+      <div className="min-h-screen">{children}</div>
     </>
   );
 }
